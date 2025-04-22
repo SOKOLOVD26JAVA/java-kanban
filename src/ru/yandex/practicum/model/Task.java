@@ -1,10 +1,13 @@
+package ru.yandex.practicum.model;
+
 import java.util.Objects;
 
 public class Task {
-    public final String name;
-    public final String description;
-    public int id;
-    Status status;
+    protected int id;
+    protected  String name;
+    protected  String description;
+    protected Status status;
+
 
 
     public Task(int id ,String name, String description) {
@@ -18,6 +21,12 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
@@ -45,12 +54,12 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "ru.yandex.practicum.model.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
@@ -58,4 +67,19 @@ public class Task {
                 '}';
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
