@@ -1,3 +1,5 @@
+package ru.yandex.practicum;
+
 import ru.yandex.practicum.manager.TaskManager;
 import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Status;
@@ -98,7 +100,7 @@ public class Main {
         }
 //        Ну и печатаем сабтаски по айди эпика.
         System.out.println("___");
-        for (SubTask subTask: manager.printSubTaskByEpicId(epic1)){
+        for (SubTask subTask: manager.getSubTaskByEpicId(epic1)){
             System.out.println(subTask);
         }
 
