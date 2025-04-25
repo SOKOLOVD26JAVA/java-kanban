@@ -13,8 +13,8 @@ public class Main {
         Task task1 = new Task("Задача 1","Описание1");
         Task task2 = new Task("Задача 2","Описание2");
         Task task3 = new Task(2,"Задача 3","Описание3");
-        manager.addTAsk(task1);
-        manager.addTAsk(task2);
+        manager.addTask(task1);
+        manager.addTask(task2);
 //        Печатаем список задач
         for (Task task: manager.printAllTasks()){
             System.out.println(task);
@@ -74,9 +74,9 @@ public class Main {
             System.out.println(epic);
         }
 //        Обновляем сабтаски 1 эпика и опять печатаем эпики, в надежде что у него поменялся статус)))).
-        manager.updateSubTaskStatus(subTask8);
-        manager.updateSubTaskStatus(subTask9);
-        manager.updateSubTaskStatus(subTask10);
+        manager.updateSubTask(subTask8);
+        manager.updateSubTask(subTask9);
+        manager.updateSubTask(subTask10);
         System.out.println("___");
         for (Epic epic:manager.printAllEpics()){
             System.out.println(epic);
@@ -100,7 +100,7 @@ public class Main {
         }
 //        Ну и печатаем сабтаски по айди эпика.
         System.out.println("___");
-        for (SubTask subTask: manager.getSubTaskByEpicId(epic1)){
+        for (SubTask subTask: manager.getSubTaskByEpicId(epic1.getId())){
             System.out.println(subTask);
         }
 
