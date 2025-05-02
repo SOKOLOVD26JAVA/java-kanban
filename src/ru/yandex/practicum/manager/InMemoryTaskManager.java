@@ -1,0 +1,225 @@
+package ru.yandex.practicum.manager;
+
+import ru.yandex.practicum.model.Epic;
+import ru.yandex.practicum.model.Status;
+import ru.yandex.practicum.model.SubTask;
+import ru.yandex.practicum.model.Task;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+public class InMemoryTaskManager implements TaskManager,HistoryManager {
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
+//    private List <Task> history = new ArrayList<>();
+    protected int id = 1;
+    private HistoryManager historyManager = Managers.getDefaultHistory();
+
+    //     Методы для ru.yandex.practicum.model.Task
+    @Override
+    public void addTask(Task task) {
+        task.setId(generateId());
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public ArrayList<Task> printAllTasks() {
+        return new ArrayList<>(tasks.values());
+    }
+
+    @Override
+    public void removeAllTasks() {
+        tasks.clear();
+    }
+
+    @Override
+    public Task getTaskById(int id) {
+//        checkHistorySize();
+//        history.add(task.get(id));
+        historyManager.addTask(tasks.get(id));
+        return tasks.get(id);
+    }
+
+    @Override
+    public void removeTaskById(int id){
+        tasks.remove(id);
+
+    }
+    @Override
+    public void updateTask(Task newTAsk){
+        Task oldTask = tasks.get(newTAsk.getId());
+        if(oldTask != null) {
+            tasks.put(newTAsk.getId(), newTAsk);
+        }else {
+            return;
+        }
+    }
+
+    //    Методы для ru.yandex.practicum.model.Epic
+    @Override
+    public void addEpic(Epic epic){
+        epic.setId(generateId());
+        epics.put(epic.getId(),epic);
+    }
+
+
+    @Override
+    public ArrayList<Epic> printAllEpics(){
+        return new ArrayList<>(epics.values());
+    }
+
+    @Override
+    public void removeAllEpics(){
+        epics.clear();
+        subTasks.clear();
+    }
+
+    @Override
+    public Epic getEpicById(int id){
+//        checkHistorySize();
+//        history.add(epics.get(id));
+        historyManager.addTask(epics.get(id));
+        return epics.get(id);
+    }
+
+    @Override
+    public void removeEpicById(int id){
+        Epic epic = epics.get(id);
+        epics.remove(epic.getId());
+        for(Integer subTaskID:epic.getSubTasksID()){
+            subTasks.remove(subTaskID);
+        }
+        epic.getSubTasksID().clear();
+    }
+
+    @Override
+    public void updateEpic(Epic newEpic){
+        Epic oldEpic = epics.get(newEpic.getId());
+        if (oldEpic != null){
+            oldEpic.setName(newEpic.getName());
+            oldEpic.setDescription(newEpic.getDescription());
+
+        }else {
+            return;
+        }
+
+    }
+
+    //    Методы для ru.yandex.practicum.model.SubTask
+    @Override
+    public void addSubTask(SubTask subTask){
+        Epic epic = epics.get(subTask.getEpicId());
+        if(epic != null) {
+            subTask.setId(generateId());
+            subTasks.put(subTask.getId(), subTask);
+            epic.addSubTaskID(subTask.getId());
+            updateEpicStatus(epic.getId());
+        }else {
+            return;
+        }
+    }
+
+
+    @Override
+    public ArrayList<SubTask> printAllSubTasks(){
+        return new ArrayList<>(subTasks.values());
+    }
+
+    @Override
+    public void removeAllSubTasks(){
+        subTasks.clear();
+        for(Epic epic:epics.values()){
+            epic.getSubTasksID().clear();
+            epic.setStatus(Status.NEW);
+        }
+    }
+
+    @Override
+    public SubTask getSubTaskById(int id){
+//        checkHistorySize();
+//        history.add(subTasks.get(id));
+        historyManager.addTask(subTasks.get(id));
+        return subTasks.get(id);
+    }
+
+    @Override
+    public void removeSubTaskById(int id){
+        SubTask subTask = subTasks.get(id);
+        Epic epic = epics.get(subTask.getEpicId());
+        epic.getSubTasksID().remove(Integer.valueOf(id));
+        subTasks.remove(id);
+        updateEpicStatus(epic.getId());
+
+    }
+
+    @Override
+    public ArrayList<SubTask> getSubTaskByEpicId(int epicId){
+        Epic epic = epics.get(epicId);
+        ArrayList<SubTask> subTasksByEpic = new ArrayList<>();
+        for(Integer subTasksId:epic.getSubTasksID()){
+            subTasksByEpic.add(subTasks.get(subTasksId));
+        }
+        return subTasksByEpic;
+
+    }
+    @Override
+    public void updateSubTask(SubTask newSubTask) {
+        SubTask oldSubtask = subTasks.get(newSubTask.getId());
+        Epic epic = epics.get(newSubTask.getEpicId());
+        if (oldSubtask != null) {
+            subTasks.put(newSubTask.getId(), newSubTask);
+            epic.getSubTasksID().remove(Integer.valueOf(oldSubtask.getId()));
+            updateEpicStatus(epic.getId());
+        }else {
+            return;
+        }
+    }
+    @Override
+    public List <Task> getHistory(){
+        return new ArrayList<>(historyManager.getHistory());
+    }
+//    private void checkHistorySize(){
+//        if(history.size()>9){
+//            history.removeFirst();
+//        }
+//    }
+    private void updateEpicStatus(int epicId){
+        int countForNew = 0;
+        int countForDone = 0;
+        Epic epic = epics.get(epicId);
+        if(getSubTaskByEpicId(epic.getId()).isEmpty()){
+            epic.setStatus(Status.NEW);
+            return;
+        }
+        for(SubTask subTask:getSubTaskByEpicId(epic.getId())){
+            if(subTask.getStatus() == Status.NEW){
+                countForNew++;
+            } else if (subTask.getStatus() == Status.DONE){
+                countForDone++;
+            } else {
+                epic.setStatus(Status.IN_PROGRESS);
+                return;
+            }
+        }
+        if(countForNew == getSubTaskByEpicId(epic.getId()).size()){
+            epic.setStatus(Status.NEW);
+        } else if (countForDone == getSubTaskByEpicId(epic.getId()).size()) {
+            epic.setStatus(Status.DONE);
+        }else {
+            epic.setStatus(Status.IN_PROGRESS);
+        }
+    }
+    private int generateId() {
+        return id++;
+    }
+
+}
+
+
+
+
+
+
