@@ -24,9 +24,6 @@ HistoryManager historyManager = Managers.getDefaultHistory();
     }
 
     @Test
-    void getHistory() {
-    }
-    @Test
     void historyTest(){
         Task task1 = new Task(1,"Задача 2","описание");
         taskManager.addTask(task1);
