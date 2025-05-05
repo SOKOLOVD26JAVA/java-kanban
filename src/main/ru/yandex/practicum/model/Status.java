@@ -1,4 +1,4 @@
-package ru.yandex.practicum.model;
+package main.ru.yandex.practicum.model;
 
 public enum Status  {
     NEW,

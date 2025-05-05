@@ -1,4 +1,4 @@
-package ru.yandex.practicum.model;
+package main.ru.yandex.practicum.model;
 
 import java.util.Objects;
 
@@ -49,7 +49,7 @@ public class Task {
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         Task task = (Task) object;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
+        return id == task.id;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.model.Task{" +
+        return "main.ru.yandex.practicum.model.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

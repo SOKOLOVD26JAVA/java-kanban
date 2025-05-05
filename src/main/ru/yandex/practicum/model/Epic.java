@@ -1,8 +1,8 @@
-package ru.yandex.practicum.model;
+package main.ru.yandex.practicum.model;
 
 import java.util.ArrayList;
 
-public class Epic extends ru.yandex.practicum.model.Task {
+public class Epic extends main.ru.yandex.practicum.model.Task {
     private ArrayList<Integer> subTasksID = new ArrayList<>();
 
     public Epic(String name, String description) {
@@ -23,7 +23,7 @@ public class Epic extends ru.yandex.practicum.model.Task {
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.model.Epic{" +
+        return "main.ru.yandex.practicum.model.Epic{" +
                 "subTasksID=" + subTasksID +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

@@ -1,6 +1,6 @@
-package ru.yandex.practicum.model;
+package main.ru.yandex.practicum.model;
 
-public class SubTask extends ru.yandex.practicum.model.Task {
+public class SubTask extends main.ru.yandex.practicum.model.Task {
     private int epicId;
     public SubTask(int id,String name,String description,int epicId,Status status){
         super(id,name,description);
@@ -20,7 +20,7 @@ public class SubTask extends ru.yandex.practicum.model.Task {
 
     @Override
     public String toString() {
-        return "ru.yandex.practicum.model.SubTask{" +
+        return "main.ru.yandex.practicum.model.SubTask{" +
                 "epicId=" + epicId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

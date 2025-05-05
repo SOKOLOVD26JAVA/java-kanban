@@ -1,9 +1,9 @@
-package ru.yandex.practicum.manager;
+package main.ru.yandex.practicum.manager;
 
-import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.model.Status;
-import ru.yandex.practicum.model.SubTask;
-import ru.yandex.practicum.model.Task;
+import main.ru.yandex.practicum.model.Epic;
+import main.ru.yandex.practicum.model.Status;
+import main.ru.yandex.practicum.model.SubTask;
+import main.ru.yandex.practicum.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,11 +14,11 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
     protected HashMap<Integer, Task> tasks = new HashMap<>();
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
-//    private List <Task> history = new ArrayList<>();
+
     protected int id = 1;
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
-    //     Методы для ru.yandex.practicum.model.Task
+    //     Методы для main.ru.yandex.practicum.model.Task
     @Override
     public void addTask(Task task) {
         task.setId(generateId());
@@ -37,10 +37,9 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
 
     @Override
     public Task getTaskById(int id) {
-//        checkHistorySize();
-//        history.add(task.get(id));
-        historyManager.addTask(tasks.get(id));
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.addTask(task);
+        return task;
     }
 
     @Override
@@ -58,7 +57,7 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
         }
     }
 
-    //    Методы для ru.yandex.practicum.model.Epic
+    //    Методы для main.ru.yandex.practicum.model.Epic
     @Override
     public void addEpic(Epic epic){
         epic.setId(generateId());
@@ -79,10 +78,9 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
 
     @Override
     public Epic getEpicById(int id){
-//        checkHistorySize();
-//        history.add(epics.get(id));
-        historyManager.addTask(epics.get(id));
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        historyManager.addTask(epic);
+        return epic;
     }
 
     @Override
@@ -108,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
 
     }
 
-    //    Методы для ru.yandex.practicum.model.SubTask
+    //    Методы для main.ru.yandex.practicum.model.SubTask
     @Override
     public void addSubTask(SubTask subTask){
         Epic epic = epics.get(subTask.getEpicId());
@@ -139,10 +137,9 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
 
     @Override
     public SubTask getSubTaskById(int id){
-//        checkHistorySize();
-//        history.add(subTasks.get(id));
-        historyManager.addTask(subTasks.get(id));
-        return subTasks.get(id);
+        SubTask subTask = subTasks.get(id);
+        historyManager.addTask(subTask);
+        return subTask;
     }
 
     @Override
@@ -177,15 +174,12 @@ public class InMemoryTaskManager implements TaskManager,HistoryManager {
             return;
         }
     }
+
     @Override
     public List <Task> getHistory(){
         return new ArrayList<>(historyManager.getHistory());
     }
-//    private void checkHistorySize(){
-//        if(history.size()>9){
-//            history.removeFirst();
-//        }
-//    }
+
     private void updateEpicStatus(int epicId){
         int countForNew = 0;
         int countForDone = 0;

@@ -1,14 +1,14 @@
-package ru.yandex.practicum.manager;
+package main.ru.yandex.practicum.manager;
 
-import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.model.SubTask;
-import ru.yandex.practicum.model.Task;
+import main.ru.yandex.practicum.model.Epic;
+import main.ru.yandex.practicum.model.SubTask;
+import main.ru.yandex.practicum.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    //     Методы для ru.yandex.practicum.model.Task
+    //     Методы для main.ru.yandex.practicum.model.Task
    void addTask(Task task);
 
     //
@@ -23,7 +23,7 @@ public interface TaskManager {
 
     void updateTask(Task newTAsk);
 
-    //    Методы для ru.yandex.practicum.model.Epic
+    //    Методы для main.ru.yandex.practicum.model.Epic
     void addEpic(Epic epic);
 
     ArrayList<Epic> printAllEpics();
@@ -36,7 +36,7 @@ public interface TaskManager {
 
     void updateEpic(Epic newEpic);
 
-    //    Методы для ru.yandex.practicum.model.SubTask
+    //    Методы для main.ru.yandex.practicum.model.SubTask
     void addSubTask(SubTask subTask);
 
     ArrayList<SubTask> printAllSubTasks();

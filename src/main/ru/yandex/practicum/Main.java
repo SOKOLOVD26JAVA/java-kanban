@@ -1,12 +1,11 @@
-package ru.yandex.practicum;
+package main.ru.yandex.practicum;
 
-import ru.yandex.practicum.manager.HistoryManager;
-import ru.yandex.practicum.manager.TaskManager;
-import ru.yandex.practicum.manager.Managers;
-import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.model.Status;
-import ru.yandex.practicum.model.SubTask;
-import ru.yandex.practicum.model.Task;
+import main.ru.yandex.practicum.manager.TaskManager;
+import main.ru.yandex.practicum.manager.Managers;
+import main.ru.yandex.practicum.model.Epic;
+import main.ru.yandex.practicum.model.Status;
+import main.ru.yandex.practicum.model.SubTask;
+import main.ru.yandex.practicum.model.Task;
 
 public class Main {
     public static void main(String[] args) {

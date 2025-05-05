@@ -1,6 +1,6 @@
-package ru.yandex.practicum.manager;
+package main.ru.yandex.practicum.manager;
 
-import ru.yandex.practicum.model.Task;
+import main.ru.yandex.practicum.model.Task;
 
 import java.util.List;
 
