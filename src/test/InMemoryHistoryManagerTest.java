@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryHistoryManagerTest {
 TaskManager taskManager = Managers.getDefault();
 HistoryManager historyManager = Managers.getDefaultHistory();
+
     @Test
     void addTask() {
         Task task = null;
@@ -24,7 +25,7 @@ HistoryManager historyManager = Managers.getDefaultHistory();
     }
 
     @Test
-    void historyTest(){
+    void historyTest() {
         Task task1 = new Task(1,"Задача 2","описание");
         taskManager.addTask(task1);
         Epic epic1 = new Epic("Имя эпика 1","Описание эпика 1");
