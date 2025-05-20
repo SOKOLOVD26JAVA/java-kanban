@@ -18,6 +18,7 @@ class InMemoryTaskManagerTest {
 //    Как я понимаю это можно принять за "убедитесь, что утилитарный класс всегда возвращает проинициализированные и готовые к работе экземпляры менеджеров;"
     TaskManager taskManager = Managers.getDefault();
    HistoryManager historyManager = Managers.getDefaultHistory();
+
     @Test
     void addNewTaskSubTaskAndEpicTest() {
         Task task1 = new Task("Задача 1","Описание1");
@@ -39,8 +40,9 @@ class InMemoryTaskManagerTest {
         assertEquals(1, subTasks.size(), "Неверное количество задач.");
         assertEquals(subTask1, subTasks.getFirst(), "Задачи не совпадают.");
     }
+
     @Test
-    void idConflictTest(){
+    void idConflictTest() {
 //        Тут я имел ввиду то ,что даже если мы вручную зададем айди у нас в любом случае айди перезаписывается, типо у
 //        нас не может быть двух задач с двумя одинаковыми айди.
         Task task1 = new Task(1,"Задача 2","описание");
@@ -51,7 +53,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void taskIdEquals(){
+    void taskIdEquals() {
         Task task1 = new Task("Задача 1","описание");
         taskManager.addTask(task1);
         Task task2 = new Task(1,"Задача 2","описание");
@@ -59,7 +61,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void epicIdEquals(){
+    void epicIdEquals() {
         Epic epic1 = new Epic("Эпик 1","описание");
         taskManager.addEpic(epic1);
         Epic epic2 = new Epic(1,"Эпик 2","описание");
@@ -67,7 +69,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void subTaskIdEquals(){
+    void subTaskIdEquals() {
         Epic epic1 = new Epic("Эпик 1","описание");
         SubTask subTask1 = new SubTask(1,"Сабтаск 1","описание",epic1.getId(),Status.NEW);
         SubTask subTask2 = new SubTask(1,"Сабтаск 2","Описание",epic1.getId(), Status.NEW);
