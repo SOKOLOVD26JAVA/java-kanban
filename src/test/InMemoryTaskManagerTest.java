@@ -4,7 +4,6 @@ import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
 import org.junit.jupiter.api.Test;
-import main.ru.yandex.practicum.manager.HistoryManager;
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
 
