@@ -119,6 +119,7 @@ public class Main {
         for (Task task: manager.getHistory()){
             System.out.println(task);
         }
+        System.out.println("");
 
 
 
