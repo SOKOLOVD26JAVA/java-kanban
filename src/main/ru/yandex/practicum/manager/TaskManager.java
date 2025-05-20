@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TaskManager {
     //     Методы для main.ru.yandex.practicum.model.Task
-   void addTask(Task task);
+    void addTask(Task task);
 
     //
     ArrayList<Task> printAllTasks();
@@ -51,5 +51,5 @@ public interface TaskManager {
 
     void updateSubTask(SubTask newSubTask);
 
-   List<Task> getHistory();
+    List<Task> getHistory();
 }

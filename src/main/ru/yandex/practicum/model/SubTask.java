@@ -8,6 +8,7 @@ public class SubTask extends main.ru.yandex.practicum.model.Task {
         this.epicId = epicId;
         this.status = status;
     }
+
     public SubTask(String name,String description,int epicId) {
         super(name,description);
         this.epicId = epicId;

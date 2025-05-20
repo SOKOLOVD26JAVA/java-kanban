@@ -10,8 +10,9 @@ public class Epic extends main.ru.yandex.practicum.model.Task {
         this.status = Status.NEW;
 
     }
-    public Epic(int id,String name, String description) {
-        super(id,name, description);
+
+    public Epic(int id, String name, String description) {
+        super(id, name, description);
         this.status = Status.NEW;
 
     }
