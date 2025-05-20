@@ -1,7 +1,6 @@
 package test;
 
 import main.ru.yandex.practicum.model.Epic;
-import main.ru.yandex.practicum.model.Status;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
     TaskManager taskManager = Managers.getDefault();
-   HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Test
     void addNewTaskSubTaskAndEpicTest() {
