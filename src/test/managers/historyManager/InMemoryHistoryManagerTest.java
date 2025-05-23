@@ -1,4 +1,4 @@
-package test;
+package managers.historyManager;
 
 import main.ru.yandex.practicum.manager.HistoryManager;
 import main.ru.yandex.practicum.manager.Managers;

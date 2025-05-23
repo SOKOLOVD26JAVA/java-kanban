@@ -1,4 +1,4 @@
-package test;
+package managers.TaskManager;
 
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.SubTask;

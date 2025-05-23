@@ -1,4 +1,4 @@
-package test;
+package task;
 
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
