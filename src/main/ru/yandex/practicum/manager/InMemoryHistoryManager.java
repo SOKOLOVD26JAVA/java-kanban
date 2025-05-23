@@ -3,11 +3,11 @@ import main.ru.yandex.practicum.model.Node;
 import main.ru.yandex.practicum.model.Task;
 import java.util.*;
 
-public class InMemoryHistoryManager <T> implements HistoryManager {
+public class InMemoryHistoryManager<T> implements HistoryManager {
     private List<Task> tasks = new ArrayList<>();
     private Map<Integer,Node> historyMap = new HashMap<>();
-    private Node <T> head = null;
-    private Node <T> tail = null;
+    private Node<T> head = null;
+    private Node<T> tail = null;
     private int size = 0;
 
     @Override
@@ -37,7 +37,7 @@ public class InMemoryHistoryManager <T> implements HistoryManager {
 
     private void linkLast(T value) {
         Node<T> newNode = new Node<>(value);
-        if(head == null){
+        if (head == null) {
             head = newNode;
             tail = newNode;
         } else {
@@ -50,7 +50,7 @@ public class InMemoryHistoryManager <T> implements HistoryManager {
 
     private ArrayList<Task>  getTasks() {
         Node<T> current = head;
-        while (current != null){
+        while (current != null) {
             tasks.add((Task) current.value);
             current = current.next;
         }
