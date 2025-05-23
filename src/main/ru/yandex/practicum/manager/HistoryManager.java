@@ -1,11 +1,7 @@
 package main.ru.yandex.practicum.manager;
-
-import main.ru.yandex.practicum.model.Node;
 import main.ru.yandex.practicum.model.Task;
-
-
 import java.util.ArrayList;
-import java.util.Map;
+
 
 public interface HistoryManager {
 
