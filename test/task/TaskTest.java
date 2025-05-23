@@ -37,4 +37,5 @@ class TaskTest {
         SubTask subTask2 = new SubTask(1, "Сабтаск 2", "Описание", epic1.getId(), Status.NEW);
         assertEquals(subTask1, subTask2, "айди не равны");
     }
+
 }
