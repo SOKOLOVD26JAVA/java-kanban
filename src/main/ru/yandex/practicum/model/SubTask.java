@@ -2,12 +2,14 @@ package main.ru.yandex.practicum.model;
 
 public class SubTask extends main.ru.yandex.practicum.model.Task {
     private int epicId;
-    public SubTask(int id,String name,String description,int epicId,Status status){
+
+    public SubTask(int id,String name,String description,int epicId,Status status) {
         super(id,name,description);
         this.epicId = epicId;
         this.status = status;
     }
-    public SubTask(String name,String description,int epicId){
+
+    public SubTask(String name,String description,int epicId) {
         super(name,description);
         this.epicId = epicId;
         this.status = Status.NEW;
