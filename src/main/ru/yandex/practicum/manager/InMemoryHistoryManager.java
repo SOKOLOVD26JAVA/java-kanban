@@ -26,9 +26,9 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if(historyMap.get(id) == null) {
+        if (historyMap.get(id) == null) {
             return;
-        }else {
+        } else {
             removeNode(historyMap.get(id));
             historyMap.remove(id);
         }
