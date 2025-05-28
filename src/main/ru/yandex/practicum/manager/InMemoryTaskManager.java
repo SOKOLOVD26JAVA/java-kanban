@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     protected int id = 1;
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+     private HistoryManager historyManager = Managers.getDefaultHistory();
 
     //     Методы для main.ru.yandex.practicum.model.Task
     @Override
@@ -30,6 +30,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllTasks() {
+        for(Task task: tasks.values()){
+            historyManager.remove(task.getId());
+        }
         tasks.clear();
     }
 
@@ -42,7 +45,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTaskById(int id) {
-        tasks.remove(id);
+        Task task = tasks.get(id);
+        historyManager.remove(task.getId());
+        tasks.remove(task.getId());
 
     }
 
@@ -71,6 +76,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
+        for(Epic epic:epics.values()){
+            historyManager.remove(epic.getId());
+        }
+        for (SubTask subTask:subTasks.values()){
+            historyManager.remove(subTask.getId());
+        }
         epics.clear();
         subTasks.clear();
     }
@@ -88,8 +99,10 @@ public class InMemoryTaskManager implements TaskManager {
         epics.remove(epic.getId());
         for (Integer subTaskID : epic.getSubTasksID()) {
             subTasks.remove(subTaskID);
+            historyManager.remove(subTaskID);
         }
         epic.getSubTasksID().clear();
+        historyManager.remove(epic.getId());
     }
 
     @Override
@@ -127,6 +140,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllSubTasks() {
+        for(SubTask subTask: subTasks.values()){
+            historyManager.remove(subTask.getId());
+        }
         subTasks.clear();
         for (Epic epic : epics.values()) {
             epic.getSubTasksID().clear();
@@ -148,7 +164,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubTasksID().remove(Integer.valueOf(id));
         subTasks.remove(id);
         updateEpicStatus(epic.getId());
-
+        historyManager.remove(subTask.getId());
     }
 
     @Override

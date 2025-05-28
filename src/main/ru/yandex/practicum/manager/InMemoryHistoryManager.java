@@ -3,8 +3,8 @@ import main.ru.yandex.practicum.model.Node;
 import main.ru.yandex.practicum.model.Task;
 import java.util.*;
 
-public class InMemoryHistoryManager<T> implements HistoryManager {
-    private List<Task> tasks = new ArrayList<>();
+public class InMemoryHistoryManager<T extends Task> implements HistoryManager {
+
     private Map<Integer,Node> historyMap = new HashMap<>();
     private Node<T> head = null;
     private Node<T> tail = null;
@@ -17,27 +17,31 @@ public class InMemoryHistoryManager<T> implements HistoryManager {
         }
 
         if (historyMap.containsKey(task.getId())) {
-            removeNode(historyMap.get(task.getId()));
             remove(task.getId());
+            linkLast(task);
+            return;
         }
-
-        Node<Task> newNode = new Node<>(task);
-        linkLast((T) newNode.value);
-        historyMap.put(task.getId(), newNode);
+        linkLast(task);
     }
 
     @Override
     public void remove(int id) {
-        historyMap.remove(id);
+        if(historyMap.get(id) == null) {
+            return;
+        }else {
+            removeNode(historyMap.get(id));
+            historyMap.remove(id);
+        }
+
     }
 
     @Override
     public ArrayList<Task> getHistory() {
-        return new ArrayList<>(getTasks());
-    }
+        return getTasks();
+   }
 
-    private void linkLast(T value) {
-        Node<T> newNode = new Node<>(value);
+    private void linkLast(Task task) {
+        Node<T> newNode = new Node<>(task);
         if (head == null) {
             head = newNode;
             tail = newNode;
@@ -47,43 +51,46 @@ public class InMemoryHistoryManager<T> implements HistoryManager {
             tail = newNode;
         }
         size++;
+        historyMap.put(task.getId(), newNode);
     }
 
     private ArrayList<Task>  getTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
         Node<T> current = head;
         while (current != null) {
-            tasks.add((Task) current.value);
+            tasks.add(current.value);
             current = current.next;
         }
         return new ArrayList<>(tasks);
     }
 
     private void removeNode(Node<T> node) {
-        Node<T> current = head;
-
-        while (current != null) {
-            if (current.value.equals(node.value)) {
-                if (current == head) {
-                    head = current.next;
-                    if (head != null) {
-                        head.prev = null;
-                    } else {
-                        tail = null;
-                    }
-                } else if (current == tail) {
-                    tail = current.prev;
-                    if (tail != null) {
-                        tail.next = null;
-                    } else {
-                        head = null;
-                    }
-                } else {
-                    current.prev.next = current.next;
-                    current.next.prev = current.prev;
-                }
-                return;
-            }
-            current = current.next;
+        if (node == null) {
+            return;
         }
+
+        if (node == head) {
+            if (head.next == null) {
+                head = null;
+                tail = null;
+            } else {
+                head = node.next;
+                head.prev = null;
+            }
+        } else if (node == tail) {
+            tail = node.prev;
+            if (tail != null) {
+                tail.next = null;
+            }
+        } else {
+            if (node.next != null) {
+                node.next.prev = node.prev;
+            }
+            if (node.prev != null) {
+                node.prev.next = node.next;
+            }
+        }
+
+        historyMap.remove(node.value.getId());
     }
 }

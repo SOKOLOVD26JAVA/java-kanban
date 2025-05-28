@@ -46,5 +46,23 @@ class InMemoryTaskManagerTest {
         assertNotEquals(task1.getId(), task2.getId(), "Айди равны");
     }
 
+    @Test
+    void removeEpicTest(){
+        Epic epic1 = new Epic("Эпик 1","Описание");
+        Epic epic2 = new Epic("Эпик 1","Описание");
+        taskManager.addEpic(epic1);
+        taskManager.addEpic(epic2);
+        SubTask subTask1 = new SubTask("Сабтаск 1","Описание",epic1.getId());
+        taskManager.addSubTask(subTask1);
+        SubTask subTask2 = new SubTask("Сабтаск 2","Описание",epic1.getId());
+        SubTask subTask3 = new SubTask("Сабтаск 3","Описание",epic2.getId());
+        taskManager.addSubTask(subTask3);
+        taskManager.addSubTask(subTask2);
+        taskManager.removeEpicById(epic1.getId());
+        assertNull(taskManager.getSubTaskById(subTask1.getId()),"Сабтаск не удалился.");
+        assertNull(taskManager.getSubTaskById(subTask2.getId()),"Сабтаск не удалился.");
+        assertNotNull(taskManager.getSubTaskById(subTask3.getId()),"Этот сабтаск не удалялся");
+    }
+
 
 }
