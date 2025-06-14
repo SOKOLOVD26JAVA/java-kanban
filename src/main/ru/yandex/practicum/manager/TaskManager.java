@@ -1,15 +1,13 @@
 package main.ru.yandex.practicum.manager;
-
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
     //     Методы для main.ru.yandex.practicum.model.Task
-   void addTask(Task task);
+    void addTask(Task task);
 
     //
     ArrayList<Task> printAllTasks();
@@ -50,5 +48,6 @@ public interface TaskManager {
     ArrayList<SubTask> getSubTaskByEpicId(int epicId);
 
     void updateSubTask(SubTask newSubTask);
-   List<Task> getHistory();
+
+    List<Task> getHistory();
 }

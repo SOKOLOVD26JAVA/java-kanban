@@ -1,4 +1,4 @@
-package test;
+package managers;
 
 import main.ru.yandex.practicum.manager.HistoryManager;
 import main.ru.yandex.practicum.manager.Managers;
@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagersTest {
 
     @Test
-    void getDefault() {
+    void getDefaultTest() {
         TaskManager taskManager = Managers.getDefault();
         assertNotNull(taskManager);
     }
 
     @Test
-    void getDefaultHistory() {
+    void getDefaultHistoryTest() {
         HistoryManager historyManager = Managers.getDefaultHistory();
         assertNotNull(historyManager);
     }
