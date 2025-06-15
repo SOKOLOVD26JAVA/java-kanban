@@ -15,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     protected int id = 1;
-     private HistoryManager historyManager = Managers.getDefaultHistory();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     //     Методы для main.ru.yandex.practicum.model.Task
     @Override

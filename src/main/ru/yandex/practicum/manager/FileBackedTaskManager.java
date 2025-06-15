@@ -24,7 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String line = bf.readLine();
                 if(line.contains("TASK")) {
                     manager.addTask(fromString(line));
-                }else if(line.contains("EPIC")){
+                }else if(line.contains("EPIC")) {
                     manager.addEpic((Epic) fromString(line));
                 }else if(line.contains("SUBTASK")) {
                     manager.addSubTask((SubTask) fromString(line));

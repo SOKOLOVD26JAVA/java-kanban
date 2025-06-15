@@ -16,6 +16,7 @@ public class SubTask extends main.ru.yandex.practicum.model.Task {
         this.status = Status.NEW;
         this.taskType = TaskType.SUBTASK;
     }
+
     public SubTask(int id,TaskType type,String name,Status status,String description,int epicId) {
         super(id,type, name, status, description);
         this.epicId = epicId;
