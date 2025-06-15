@@ -31,6 +31,7 @@ public class Task {
         this.status = Status.NEW;
         this.taskType = TaskType.TASK;
     }
+
     public Task(int id, TaskType type,String name,Status status,String description) {
         this.id = id;
         this.taskType = type;

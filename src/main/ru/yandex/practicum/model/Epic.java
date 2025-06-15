@@ -17,7 +17,7 @@ public class Epic extends main.ru.yandex.practicum.model.Task {
         this.taskType = TaskType.EPIC;
     }
 
-    public Epic(int id, TaskType type,String name,Status status,String description){
+    public Epic(int id, TaskType type,String name,Status status,String description) {
         super(id,type, name, status, description);
     }
 
