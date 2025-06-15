@@ -14,44 +14,44 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     static FileBackedTaskManager loadFromFile(File file) {
-       TaskManager manager = Managers.getDefault();
-        try(FileReader reader = new FileReader(file)) {
+        TaskManager manager = Managers.getDefault();
+        try (FileReader reader = new FileReader(file)) {
             BufferedReader bf = new BufferedReader(reader);
-            if (bf.ready()){
+            if (bf.ready()) {
                 bf.readLine();
             }
             while (bf.ready()) {
                 String line = bf.readLine();
-                if(line.contains("TASK")) {
+                if (line.contains("TASK")) {
                     manager.addTask(fromString(line));
-                }else if(line.contains("EPIC")) {
+                } else if (line.contains("EPIC")) {
                     manager.addEpic((Epic) fromString(line));
-                }else if(line.contains("SUBTASK")) {
+                } else if (line.contains("SUBTASK")) {
                     manager.addSubTask((SubTask) fromString(line));
                 }
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new ManagerSaveException("Ошибка считывания из файла");
         }
         return new FileBackedTaskManager("file\\path\\to\\CSV.csv");
     }
 
     public void save() {
-        try(Writer writer = new FileWriter(this.filePath)) {
-            writer.write("id,type,name,status,description,epic"+"\n");
-            if(!tasks.isEmpty()) {
-                for (Task task: tasks.values()) {
-                    writer.write(toString(task)+"\n");
+        try (Writer writer = new FileWriter(this.filePath)) {
+            writer.write("id,type,name,status,description,epic" + "\n");
+            if (!tasks.isEmpty()) {
+                for (Task task : tasks.values()) {
+                    writer.write(toString(task) + "\n");
                 }
             }
             if (!epics.isEmpty()) {
-                for (Epic epic: epics.values()){
-                    writer.write(toString(epic)+"\n");
+                for (Epic epic : epics.values()) {
+                    writer.write(toString(epic) + "\n");
                 }
             }
             if (!subTasks.isEmpty()) {
-                for (SubTask subTask: subTasks.values()) {
-                    writer.write(toString(subTask)+"\n");
+                for (SubTask subTask : subTasks.values()) {
+                    writer.write(toString(subTask) + "\n");
                 }
             }
         } catch (IOException e) {
@@ -131,15 +131,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    private String toString(Task  task) {
-        String taskInfo = String.format("%s,%s,%s,%s,%s",task.getId(),task.getTaskType(),task.getName()
-        ,task.getStatus(),task.getDescription());
+    private String toString(Task task) {
+        String taskInfo = String.format("%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName()
+                , task.getStatus(), task.getDescription());
         return taskInfo;
     }
 
     private String toString(SubTask task) {
-        String taskInfo = String.format("%s,%s,%s,%s,%s,%s",task.getId(),task.getTaskType(),task.getName()
-                ,task.getStatus(),task.getDescription(),task.getEpicId());
+        String taskInfo = String.format("%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName()
+                , task.getStatus(), task.getDescription(), task.getEpicId());
         return taskInfo;
     }
 
@@ -160,14 +160,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             Status status = Status.valueOf(split[3]);
             String description = split[4];
             return new Epic(id, type, name, status, description);
-        }else {
+        } else {
             int id = Integer.parseInt(split[0]);
             TaskType type = TaskType.valueOf(split[1]);
             String name = split[2];
             Status status = Status.valueOf(split[3]);
             String description = split[4];
             int epicId = Integer.parseInt(split[5]);
-            return new SubTask(id, type, name, status, description,epicId);
+            return new SubTask(id, type, name, status, description, epicId);
         }
     }
 }
