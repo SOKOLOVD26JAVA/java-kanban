@@ -7,13 +7,14 @@ public class Task {
     protected  String name;
     protected  String description;
     protected Status status;
-
+    protected TaskType taskType;
 
 
     public Task(int id,String name,String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.taskType = TaskType.TASK;
     }
 
     public Task(int id,String name,String description,Status status) {
@@ -21,11 +22,25 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.taskType = TaskType.TASK;
     }
 
     public Task(String name,String description) {
         this.name = name;
         this.description = description;
+        this.status = Status.NEW;
+        this.taskType = TaskType.TASK;
+    }
+    public Task(int id, TaskType type,String name,Status status,String description){
+        this.id = id;
+        this.taskType = type;
+        this.name = name;
+        this.status = status;
+        this.description = description;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
     }
 
     public int getId() {
