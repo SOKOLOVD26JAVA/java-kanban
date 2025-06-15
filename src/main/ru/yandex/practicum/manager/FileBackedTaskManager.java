@@ -132,14 +132,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) {
-        String taskInfo = String.format("%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName()
-                , task.getStatus(), task.getDescription());
+        String taskInfo = String.format("%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
+                task.getStatus(), task.getDescription());
         return taskInfo;
     }
 
     private String toString(SubTask task) {
-        String taskInfo = String.format("%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName()
-                , task.getStatus(), task.getDescription(), task.getEpicId());
+        String taskInfo = String.format("%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
+                task.getStatus(), task.getDescription(), task.getEpicId());
         return taskInfo;
     }
 
