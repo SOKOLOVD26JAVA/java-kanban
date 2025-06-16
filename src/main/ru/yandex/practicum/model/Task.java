@@ -40,6 +40,12 @@ public class Task {
         this.description = description;
     }
 
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
     public TaskType getTaskType() {
         return taskType;
     }

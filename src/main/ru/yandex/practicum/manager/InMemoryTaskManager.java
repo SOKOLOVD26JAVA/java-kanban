@@ -128,7 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.addSubTaskID(subTask.getId());
             updateEpicStatus(epic.getId());
         } else {
-            return;
+           return;
         }
     }
 
@@ -226,6 +226,9 @@ public class InMemoryTaskManager implements TaskManager {
         return id++;
     }
 
+    public HashMap<Integer, Task> getTasks() {
+        return tasks;
+    }
 }
 
 

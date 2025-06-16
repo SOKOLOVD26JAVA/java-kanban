@@ -9,11 +9,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String filePath;
 
-    FileBackedTaskManager(String filePath) {
+    public FileBackedTaskManager(String filePath) {
         this.filePath = filePath;
     }
 
-    static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
         TaskManager manager = Managers.getDefault();
         try (FileReader reader = new FileReader(file)) {
             BufferedReader bf = new BufferedReader(reader);
@@ -31,9 +31,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка считывания из файла");
+            throw new ManagerSaveException("Ошибка чтения файла");
         }
-        return new FileBackedTaskManager("file\\path\\to\\CSV.csv");
+        return new FileBackedTaskManager("path\\to\\file\\CSV.csv");
     }
 
     public void save() {
@@ -145,7 +145,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private static Task fromString(String value) {
         String[] split = value.split(",");
-        System.out.println(split[1]);
         if (split[1].equals("TASK")) {
             int id = Integer.parseInt(split[0]);
             TaskType type = TaskType.valueOf(split[1]);
