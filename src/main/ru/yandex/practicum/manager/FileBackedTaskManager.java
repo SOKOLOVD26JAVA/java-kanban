@@ -10,7 +10,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String filePath;
 
     public FileBackedTaskManager() {
-        String defaultFile = this.filePath;
+     String defaultFile = this.filePath;
     }
 
     public FileBackedTaskManager(String filePath) {

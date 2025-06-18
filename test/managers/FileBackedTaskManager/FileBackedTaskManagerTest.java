@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
 
+
+
     @Test
     void addTaskToFile() {
         try {
-            File tempFile = File.createTempFile("temp", ".csv");
+            File tempFile = File.createTempFile("temp1", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             manager.addTask(task);
@@ -31,7 +33,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void getTaskFromFile() {
         try {
-            File tempFile = File.createTempFile("temp", ".csv");
+            File tempFile = File.createTempFile("temp2", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             Task task2 = new Task("Task2", "TaskDesc");
@@ -50,7 +52,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void removeTasksFromFile(){
         try {
-            File tempFile = File.createTempFile("temp", ".txt");
+            File tempFile = File.createTempFile("temp3", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             manager.addTask(task);
@@ -68,7 +70,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void removeAllTasks(){
         try {
-            File tempFile = File.createTempFile("temp", ".txt");
+            File tempFile = File.createTempFile("temp4", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             Task task2 = new Task("Task2", "TaskDesc");
@@ -95,7 +97,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void updateTask(){
         try {
-            File tempFile = File.createTempFile("temp", ".txt");
+            File tempFile = File.createTempFile("temp5", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             Task task2 = new Task(1,"Task", "TaskDesc", Status.DONE);
@@ -112,7 +114,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void addSubTaskInEpicAfterLoadFromFile(){
         try {
-            File tempFile = File.createTempFile("temp", ".txt");
+            File tempFile = File.createTempFile("temp6", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Epic epic = new Epic("epic","epic");
             manager.addEpic(epic);
@@ -131,7 +133,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void addSubTaskIdInDifferentEpicsAfterLoadFromFile(){
         try {
-            File tempFile = File.createTempFile("temp", ".txt");
+            File tempFile = File.createTempFile("temp7", ".tmp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Epic epic = new Epic("epic","epic");
             manager.addEpic(epic);
@@ -152,7 +154,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void addTaskAfterLoadFromFile(){
         try {
-            File tempFile = File.createTempFile("temp", ".csv");
+            File tempFile = File.createTempFile("temp8", ".mp");
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile.getAbsolutePath());
             Task task = new Task("Task", "TaskDesc");
             manager.addTask(task);
