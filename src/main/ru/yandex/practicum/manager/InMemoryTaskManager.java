@@ -10,11 +10,11 @@ import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    protected HashMap<Integer, Task> tasks = new HashMap<>();
-    protected HashMap<Integer, Epic> epics = new HashMap<>();
-    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    protected static HashMap<Integer, Task> tasks = new HashMap<>();
+    protected static HashMap<Integer, Epic> epics = new HashMap<>();
+    protected static HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
-    protected int id = 1;
+    protected static int id = 1;
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
     //     Методы для main.ru.yandex.practicum.model.Task
@@ -226,9 +226,6 @@ public class InMemoryTaskManager implements TaskManager {
         return id++;
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
-    }
 }
 
 
