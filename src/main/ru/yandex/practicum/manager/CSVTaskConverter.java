@@ -8,8 +8,8 @@ import main.ru.yandex.practicum.model.Task;
 public class CSVTaskConverter {
 
     public static String taskToString(Task task) {
-        if(task.getClass() == SubTask.class) {
-            SubTask subTask = (SubTask)task;
+        if (task.getClass() == SubTask.class) {
+            SubTask subTask = (SubTask) task;
             String taskInfo = String.format("%s,%s,%s,%s,%s,%s", subTask.getId(), subTask.getTaskType(), subTask.getName(),
                     subTask.getStatus(), subTask.getDescription(), subTask.getEpicId());
             return taskInfo;
@@ -27,7 +27,7 @@ public class CSVTaskConverter {
         Status status = Status.valueOf(split[3]);
         String description = split[4];
         if (split[1].equals("TASK")) {
-            return new Task(id,name, status, description);
+            return new Task(id, name, status, description);
         } else if (split[1].equals("EPIC")) {
             return new Epic(id, name, status, description);
         } else {

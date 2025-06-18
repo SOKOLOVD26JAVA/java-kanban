@@ -1,8 +1,10 @@
 package main.ru.yandex.practicum.manager;
+
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.Status;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +33,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllTasks() {
-        for (Task task: tasks.values()) {
+        for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
         }
         tasks.clear();
@@ -76,10 +78,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
-        for (Epic epic:epics.values()) {
+        for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
         }
-        for (SubTask subTask:subTasks.values()) {
+        for (SubTask subTask : subTasks.values()) {
             historyManager.remove(subTask.getId());
         }
         epics.clear();
@@ -128,7 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.addSubTaskID(subTask.getId());
             updateEpicStatus(epic.getId());
         } else {
-           return;
+            return;
         }
     }
 
@@ -139,7 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllSubTasks() {
-        for (SubTask subTask: subTasks.values()) {
+        for (SubTask subTask : subTasks.values()) {
             historyManager.remove(subTask.getId());
         }
         subTasks.clear();

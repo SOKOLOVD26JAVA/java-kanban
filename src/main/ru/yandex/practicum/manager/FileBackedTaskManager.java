@@ -9,7 +9,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String filePath;
 
-    public FileBackedTaskManager(){
+    public FileBackedTaskManager() {
         String defaultFile = this.filePath;
     }
 
@@ -27,25 +27,27 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             while (bf.ready()) {
                 String line = bf.readLine();
-               Task task = CSVTaskConverter.fromString(line);
-               if (task.getTaskType().equals(TaskType.TASK)) {
-                   tasks.put(task.getId(), task);
-                   updateMaxId(task);
-               }if (task.getTaskType().equals(TaskType.EPIC)) {
-                   Epic epic = (Epic)task;
-                   epics.put(epic.getId(), epic);
-                   updateMaxId(epic);
-               }if (task.getTaskType().equals(TaskType.SUBTASK)){
-                   SubTask subTask = (SubTask) task;
-                   subTasks.put(subTask.getId(), subTask);
-                   updateMaxId(subTask);
+                Task task = CSVTaskConverter.fromString(line);
+                if (task.getTaskType().equals(TaskType.TASK)) {
+                    tasks.put(task.getId(), task);
+                    updateMaxId(task);
                 }
-               if (!subTasks.isEmpty()) {
-                   for (SubTask subTask : subTasks.values()) {
-                       Epic epic = epics.get(subTask.getEpicId());
-                       epic.addSubTaskID(subTask.getId());
-                   }
-               }
+                if (task.getTaskType().equals(TaskType.EPIC)) {
+                    Epic epic = (Epic) task;
+                    epics.put(epic.getId(), epic);
+                    updateMaxId(epic);
+                }
+                if (task.getTaskType().equals(TaskType.SUBTASK)) {
+                    SubTask subTask = (SubTask) task;
+                    subTasks.put(subTask.getId(), subTask);
+                    updateMaxId(subTask);
+                }
+                if (!subTasks.isEmpty()) {
+                    for (SubTask subTask : subTasks.values()) {
+                        Epic epic = epics.get(subTask.getEpicId());
+                        epic.addSubTaskID(subTask.getId());
+                    }
+                }
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка чтения файла");
@@ -149,7 +151,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static void updateMaxId(Task task) {
-        if(task.getId()>id){
+        if (task.getId() > id) {
             id = task.getId();
         }
     }
