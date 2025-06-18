@@ -1,5 +1,6 @@
 package task;
 
+import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TaskTest {
-    TaskManager taskManager = Managers.getDefault();
+    TaskManager taskManager = new InMemoryTaskManager();
 
 
     @Test

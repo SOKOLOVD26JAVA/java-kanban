@@ -1,5 +1,6 @@
 package managers.historyManager;
 import main.ru.yandex.practicum.manager.HistoryManager;
+import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
-    TaskManager taskManager = Managers.getDefault();
+    TaskManager taskManager = new InMemoryTaskManager();
     HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Test

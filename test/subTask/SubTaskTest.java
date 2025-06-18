@@ -1,5 +1,6 @@
 package subTask;
 
+import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SubTaskTest {
-    TaskManager manager = Managers.getDefault();
+    TaskManager manager = new InMemoryTaskManager();
 
     @Test
     void idSubTaskAfterRemoveTest(){

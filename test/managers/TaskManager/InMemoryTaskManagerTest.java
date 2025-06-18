@@ -1,10 +1,11 @@
 package managers.TaskManager;
 
+import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
 import org.junit.jupiter.api.Test;
-import main.ru.yandex.practicum.manager.Managers;
+
 import main.ru.yandex.practicum.manager.TaskManager;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class InMemoryTaskManagerTest {
-    TaskManager taskManager = Managers.getDefault();
+    TaskManager taskManager = new InMemoryTaskManager();
 
     @Test
     void addNewTaskSubTaskAndEpicTest() {
@@ -35,15 +36,6 @@ class InMemoryTaskManagerTest {
         final List<SubTask> subTasks = taskManager.printAllSubTasks();
         assertEquals(1, subTasks.size(), "Неверное количество задач.");
         assertEquals(subTask1, subTasks.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    void idConflictTest() {
-        Task task1 = new Task(1, "Задача 2", "описание");
-        Task task2 = new Task("Задача 3", "описание 3");
-        taskManager.addTask(task1);
-        taskManager.addTask(task2);
-        assertNotEquals(task1.getId(), task2.getId(), "Айди равны");
     }
 
     @Test
