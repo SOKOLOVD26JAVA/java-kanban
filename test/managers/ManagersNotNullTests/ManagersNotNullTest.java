@@ -1,20 +1,17 @@
-package managers;
+package managers.ManagersNotNullTests;
 
 import main.ru.yandex.practicum.manager.FileBackedTaskManager;
 import main.ru.yandex.practicum.manager.HistoryManager;
 import main.ru.yandex.practicum.manager.Managers;
 import main.ru.yandex.practicum.manager.TaskManager;
-import main.ru.yandex.practicum.model.Task;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ManagersTest {
+class ManagersNotNullTest {
 
     @Test
     void getDefaultTest() {

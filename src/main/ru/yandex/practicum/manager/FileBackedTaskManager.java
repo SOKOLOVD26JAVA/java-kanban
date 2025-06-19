@@ -28,23 +28,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (bf.ready()) {
                 String line = bf.readLine();
                 Task task = CSVTaskConverter.fromString(line);
-                if (task.getTaskType().equals(TaskType.TASK)) {
-                    tasks.put(task.getId(), task);
-                    updateMaxId(task);
+                switch (task.getTaskType()) {
+                    case TASK -> {manager.tasks.put(task.getId(), task);}
+                    case EPIC -> {Epic epic = (Epic) task;
+                        manager.epics.put(epic.getId(), epic);}
+                    case SUBTASK -> {SubTask subTask = (SubTask) task;
+                        manager.subTasks.put(subTask.getId(), subTask);}
+                    default -> throw new ManagerSaveException("Ошибка.");
                 }
-                if (task.getTaskType().equals(TaskType.EPIC)) {
-                    Epic epic = (Epic) task;
-                    epics.put(epic.getId(), epic);
-                    updateMaxId(epic);
-                }
-                if (task.getTaskType().equals(TaskType.SUBTASK)) {
-                    SubTask subTask = (SubTask) task;
-                    subTasks.put(subTask.getId(), subTask);
-                    updateMaxId(subTask);
-                }
-                if (!subTasks.isEmpty()) {
-                    for (SubTask subTask : subTasks.values()) {
-                        Epic epic = epics.get(subTask.getEpicId());
+                manager.updateMaxId(task);
+                if (!manager.subTasks.isEmpty()) {
+                    for (SubTask subTask : manager.subTasks.values()) {
+                        Epic epic = manager.epics.get(subTask.getEpicId());
                         epic.addSubTaskID(subTask.getId());
                     }
                 }
@@ -150,7 +145,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    private static void updateMaxId(Task task) {
+    private void updateMaxId(Task task) {
         if (task.getId() > id) {
             id = task.getId();
         }
