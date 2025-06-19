@@ -10,7 +10,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String filePath;
 
     public FileBackedTaskManager() {
-     String defaultFile = this.filePath;
+        String defaultFile = this.filePath;
     }
 
     public FileBackedTaskManager(String filePath) {
@@ -29,11 +29,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String line = bf.readLine();
                 Task task = CSVTaskConverter.fromString(line);
                 switch (task.getTaskType()) {
-                    case TASK -> {manager.tasks.put(task.getId(), task);}
-                    case EPIC -> {Epic epic = (Epic) task;
-                        manager.epics.put(epic.getId(), epic);}
-                    case SUBTASK -> {SubTask subTask = (SubTask) task;
-                        manager.subTasks.put(subTask.getId(), subTask);}
+                    case TASK -> {
+                        manager.tasks.put(task.getId(), task);
+                    }
+                    case EPIC -> {
+                        Epic epic = (Epic) task;
+                        manager.epics.put(epic.getId(), epic);
+                    }
+                    case SUBTASK -> {
+                        SubTask subTask = (SubTask) task;
+                        manager.subTasks.put(subTask.getId(), subTask);
+                    }
                     default -> throw new ManagerSaveException("Ошибка.");
                 }
                 manager.updateMaxId(task);
