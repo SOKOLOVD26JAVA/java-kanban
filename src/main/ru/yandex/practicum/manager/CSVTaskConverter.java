@@ -5,6 +5,7 @@ import main.ru.yandex.practicum.model.*;
 public class CSVTaskConverter {
 
     public static String taskToString(Task task) {
+        String newString = "asdf";
         if (task.getTaskType() == TaskType.SUBTASK) {
             SubTask subTask = (SubTask) task;
             String taskInfo = String.format("%s,%s,%s,%s,%s,%s", subTask.getId(), subTask.getTaskType(), subTask.getName(),
