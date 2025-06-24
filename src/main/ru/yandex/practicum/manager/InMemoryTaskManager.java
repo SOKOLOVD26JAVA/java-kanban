@@ -1,20 +1,23 @@
 package main.ru.yandex.practicum.manager;
+
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.Status;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    protected HashMap<Integer, Task> tasks = new HashMap<>();
-    protected HashMap<Integer, Epic> epics = new HashMap<>();
-    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
+
+    protected  HashMap<Integer, Task> tasks = new HashMap<>();
+    protected  HashMap<Integer, Epic> epics = new HashMap<>();
+    protected  HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     protected int id = 1;
-     private HistoryManager historyManager = Managers.getDefaultHistory();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     //     Методы для main.ru.yandex.practicum.model.Task
     @Override
@@ -30,7 +33,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllTasks() {
-        for (Task task: tasks.values()) {
+        for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
         }
         tasks.clear();
@@ -68,7 +71,6 @@ public class InMemoryTaskManager implements TaskManager {
         epics.put(epic.getId(), epic);
     }
 
-
     @Override
     public ArrayList<Epic> printAllEpics() {
         return new ArrayList<>(epics.values());
@@ -76,10 +78,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
-        for (Epic epic:epics.values()) {
+        for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
         }
-        for (SubTask subTask:subTasks.values()) {
+        for (SubTask subTask : subTasks.values()) {
             historyManager.remove(subTask.getId());
         }
         epics.clear();
@@ -132,7 +134,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     @Override
     public ArrayList<SubTask> printAllSubTasks() {
         return new ArrayList<>(subTasks.values());
@@ -140,7 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllSubTasks() {
-        for (SubTask subTask: subTasks.values()) {
+        for (SubTask subTask : subTasks.values()) {
             historyManager.remove(subTask.getId());
         }
         subTasks.clear();
@@ -185,6 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (oldSubtask != null) {
             subTasks.put(newSubTask.getId(), newSubTask);
             epic.getSubTasksID().remove(Integer.valueOf(oldSubtask.getId()));
+            epic.getSubTasksID().add(newSubTask.getId());
             updateEpicStatus(epic.getId());
         } else {
             return;

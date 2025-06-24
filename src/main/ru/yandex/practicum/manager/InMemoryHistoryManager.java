@@ -1,11 +1,13 @@
 package main.ru.yandex.practicum.manager;
+
 import main.ru.yandex.practicum.model.Node;
 import main.ru.yandex.practicum.model.Task;
+
 import java.util.*;
 
 public class InMemoryHistoryManager<T extends Task> implements HistoryManager {
 
-    private Map<Integer,Node> historyMap = new HashMap<>();
+    private Map<Integer, Node> historyMap = new HashMap<>();
     private Node<T> head = null;
     private Node<T> tail = null;
     private int size = 0;
@@ -38,7 +40,7 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager {
     @Override
     public ArrayList<Task> getHistory() {
         return getTasks();
-   }
+    }
 
     private void linkLast(Task task) {
         Node<T> newNode = new Node<>(task);
@@ -54,7 +56,7 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager {
         historyMap.put(task.getId(), newNode);
     }
 
-    private ArrayList<Task>  getTasks() {
+    private ArrayList<Task> getTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         Node<T> current = head;
         while (current != null) {
