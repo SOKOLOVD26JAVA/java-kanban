@@ -24,11 +24,11 @@ public class Epic extends main.ru.yandex.practicum.model.Task {
     }
 
     public Epic(int id,
-                String name,
-                Status status,
-                String description,
-                LocalDateTime startTime,
-                Duration taskDuration) {
+                String name
+            , Status status
+            , String description
+            , LocalDateTime startTime
+            , Duration taskDuration) {
         super(id, name, status, description, startTime, taskDuration);
     }
 

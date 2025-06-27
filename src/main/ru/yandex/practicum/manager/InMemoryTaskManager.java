@@ -273,14 +273,13 @@ public class InMemoryTaskManager implements TaskManager {
         if (getSubTaskByEpicId(epic.getId()).isEmpty()) {
             return;
         }
-        epic.setTaskDuration(getSubTaskByEpicId(epic.getId()).stream().
-                map(SubTask::getTaskDuration).
+        epic.setTaskDuration(getSubTaskByEpicId(epic.getId()).stream()
+                .map(SubTask::getTaskDuration).
                 reduce(Duration.ZERO, Duration::plus));
         epic.setTaskStart(getSubTaskByEpicId(epic.getId()).stream().
-                map(SubTask::getTaskStart).
-                min(LocalDateTime::compareTo).get());
-        epic.setEndTime(getSubTaskByEpicId(epic.getId()).stream().
-                map(SubTask::getEndTime).max(LocalDateTime::compareTo).get());
+                map(SubTask::getTaskStart).min(LocalDateTime::compareTo).get());
+        epic.setEndTime(getSubTaskByEpicId(epic.getId()).stream().map(SubTask::getEndTime)
+                .max(LocalDateTime::compareTo).get());
     }
 
     private int generateId() {
