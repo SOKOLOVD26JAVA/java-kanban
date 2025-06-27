@@ -1,7 +1,9 @@
 package main.ru.yandex.practicum.manager;
+
 import main.ru.yandex.practicum.model.Epic;
 import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public interface TaskManager {
 
     void removeSubTaskById(int id);
 
-    ArrayList<SubTask> getSubTaskByEpicId(int epicId);
+    List<SubTask> getSubTaskByEpicId(int epicId);
 
     void updateSubTask(SubTask newSubTask);
 

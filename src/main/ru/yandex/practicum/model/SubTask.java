@@ -1,5 +1,8 @@
 package main.ru.yandex.practicum.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class SubTask extends main.ru.yandex.practicum.model.Task {
     private int epicId;
 
@@ -21,10 +24,32 @@ public class SubTask extends main.ru.yandex.practicum.model.Task {
 
     }
 
+    public SubTask(int id,
+                   String name,
+                   Status status,
+                   String description,
+                   LocalDateTime taskStart,
+                   Duration taskDuration, int epicId) {
+        super(id, name, status, description, taskStart, taskDuration);
+        this.epicId = epicId;
+
+    }
+
     public SubTask(String name, String description, int epicId, Status status) {
         super(name, description, status);
         this.epicId = epicId;
     }
+
+    public SubTask(String name, String description, LocalDateTime taskStart, Duration taskDuration, int epicId) {
+        super(name, description, taskStart, taskDuration);
+        this.epicId = epicId;
+    }
+
+    public SubTask(String name, Status status, String description, LocalDateTime startTime, Duration taskDuration, int epicId) {
+        super(name, status, description, startTime, taskDuration);
+        this.epicId = epicId;
+    }
+
 
     public int getEpicId() {
         return epicId;
