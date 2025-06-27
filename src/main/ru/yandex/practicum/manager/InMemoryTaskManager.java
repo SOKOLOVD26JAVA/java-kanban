@@ -186,8 +186,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<SubTask> getSubTaskByEpicId(int epicId) {
         Epic epic = epics.get(epicId);
-        return epic.getSubTasksID().stream().map(subTasks::get).
-                collect(Collectors.toList());
+        return epic.getSubTasksID().stream().map(subTasks::get)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -215,9 +215,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean crossForTasks(Task task) {
-        return allTasks.stream().
-                filter(task1 -> !task1.equals(task)).
-                anyMatch(task1 -> crossForTwoTasks(task1, task));
+        return allTasks.stream()
+                .filter(task1 -> !task1.equals(task))
+                .anyMatch(task1 -> crossForTwoTasks(task1, task));
     }
 
 
@@ -274,10 +274,10 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         epic.setTaskDuration(getSubTaskByEpicId(epic.getId()).stream()
-                .map(SubTask::getTaskDuration).
-                reduce(Duration.ZERO, Duration::plus));
-        epic.setTaskStart(getSubTaskByEpicId(epic.getId()).stream().
-                map(SubTask::getTaskStart).min(LocalDateTime::compareTo).get());
+                .map(SubTask::getTaskDuration)
+                .reduce(Duration.ZERO, Duration::plus));
+        epic.setTaskStart(getSubTaskByEpicId(epic.getId()).stream()
+                .map(SubTask::getTaskStart).min(LocalDateTime::compareTo).get());
         epic.setEndTime(getSubTaskByEpicId(epic.getId()).stream().map(SubTask::getEndTime)
                 .max(LocalDateTime::compareTo).get());
     }
