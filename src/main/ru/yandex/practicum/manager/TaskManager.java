@@ -6,6 +6,7 @@ import main.ru.yandex.practicum.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     //     Методы для main.ru.yandex.practicum.model.Task
@@ -52,4 +53,6 @@ public interface TaskManager {
     void updateSubTask(SubTask newSubTask);
 
     List<Task> getHistory();
+
+    TreeSet<Task> getPrioritizedTasks();
 }

@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Task> tasks = new HashMap<>();
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    protected TreeSet<Task> allTasks = new TreeSet<>(Comparator.comparing(Task::getTaskStart));
+    protected TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getTaskStart));
     protected int id = 1;
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -24,8 +24,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) {
         task.setId(generateId());
-        tasks.put(task.getId(), task);
         checkAndAdd(task);
+        tasks.put(task.getId(), task);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeAllTasks() {
         for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
-            allTasks.remove(task);
+            sortedTasks.remove(task);
         }
         tasks.clear();
     }
@@ -54,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         historyManager.remove(task.getId());
         tasks.remove(task.getId());
-        allTasks.remove(task);
+        sortedTasks.remove(task);
 
     }
 
@@ -62,9 +62,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task newTask) {
         Task oldTask = tasks.get(newTask.getId());
         if (oldTask != null) {
-            tasks.put(newTask.getId(), newTask);
-            allTasks.remove(oldTask);
             checkAndAdd(newTask);
+            tasks.put(newTask.getId(), newTask);
+            sortedTasks.remove(oldTask);
         } else {
             return;
         }
@@ -131,13 +131,13 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subTask.getEpicId());
         if (epic != null) {
             subTask.setId(generateId());
+            checkAndAdd(subTask);
             subTasks.put(subTask.getId(), subTask);
             epic.addSubTaskID(subTask.getId());
             updateEpicStatus(epic.getId());
             if (!(subTask.getTaskStart() == null) || !(subTask.getTaskDuration() == null)) {
                 updateEpicTimes(epic.getId());
             }
-            checkAndAdd(subTask);
         } else {
             return;
         }
@@ -152,7 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeAllSubTasks() {
         for (SubTask subTask : subTasks.values()) {
             historyManager.remove(subTask.getId());
-            allTasks.remove(subTask);
+            sortedTasks.remove(subTask);
         }
         subTasks.clear();
         for (Epic epic : epics.values()) {
@@ -179,7 +179,7 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicTimes(epic.getId());
         }
         historyManager.remove(subTask.getId());
-        allTasks.remove(subTask);
+        sortedTasks.remove(subTask);
 
     }
 
@@ -193,11 +193,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubTask(SubTask newSubTask) {
         SubTask oldSubtask = subTasks.get(newSubTask.getId());
-        allTasks.remove(oldSubtask);
         Epic epic = epics.get(newSubTask.getEpicId());
         if (oldSubtask != null) {
-            subTasks.put(newSubTask.getId(), newSubTask);
             checkAndAdd(newSubTask);
+            sortedTasks.remove(oldSubtask);
+            subTasks.put(newSubTask.getId(), newSubTask);
             epic.getSubTasksID().remove(Integer.valueOf(oldSubtask.getId()));
             epic.getSubTasksID().add(newSubTask.getId());
             updateEpicStatus(epic.getId());
@@ -214,8 +214,13 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(historyManager.getHistory());
     }
 
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        return new TreeSet<>(sortedTasks);
+    }
+
     private boolean crossForTasks(Task task) {
-        return allTasks.stream()
+        return sortedTasks.stream()
                 .filter(task1 -> !task1.equals(task))
                 .anyMatch(task1 -> crossForTwoTasks(task1, task));
     }
@@ -225,19 +230,14 @@ public class InMemoryTaskManager implements TaskManager {
         return task1.getEndTime().isAfter(task2.getTaskStart()) && task2.getEndTime().isAfter(task1.getTaskStart());
     }
 
-    public TreeSet<Task> getPrioritizedTasks() {
-        return new TreeSet<>(allTasks);
-    }
-
-
     private void checkAndAdd(Task task) {
         if (task.getTaskStart() == null || task.getTaskDuration() == null) {
             return;
         }
-        if (allTasks.isEmpty()) {
-            allTasks.add(task);
+        if (sortedTasks.isEmpty()) {
+            sortedTasks.add(task);
         } else if (!crossForTasks(task)) {
-            allTasks.add(task);
+            sortedTasks.add(task);
         }
     }
 

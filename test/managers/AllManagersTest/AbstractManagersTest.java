@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import main.ru.yandex.practicum.manager.TaskManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public abstract class AbstractManagersTest<T extends TaskManager> {
 
     protected abstract T getManager();
@@ -85,6 +88,126 @@ public abstract class AbstractManagersTest<T extends TaskManager> {
         manager.updateSubTask(subTask2);
         assertEquals(manager.getEpicById(epic.getId()).getStatus(), Status.DONE);
         assertEquals(manager.getSubTaskById(3).getStatus(), Status.DONE);
+    }
+
+    @Test
+    void addAllTypeTaskWithOutTime() {
+        T manager = getManager();
+        Task task = new Task("task", "desc");
+        manager.addTask(task);
+        Epic epic = new Epic("epic", "desc");
+        manager.addEpic(epic);
+        SubTask subTask = new SubTask("subtask", "desc", epic.getId());
+        manager.addSubTask(subTask);
+        assertEquals(0, manager.getPrioritizedTasks().size());
+    }
+
+
+    @Test
+    void addAllTypeTaskInPrioritized() {
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(1));
+        manager.addTask(task);
+        Epic epic = new Epic("epic", "desc");
+        manager.addEpic(epic);
+        SubTask subTask = new SubTask("subtask", "desc", LocalDateTime.now().plusMinutes(2),
+                Duration.ofMinutes(2), epic.getId());
+        manager.addSubTask(subTask);
+        assertEquals(2, manager.getPrioritizedTasks().size());
+    }
+
+    @Test
+    void taskCross() {
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(1));
+        manager.addTask(task);
+        Task task1 = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(1));
+        manager.addTask(task1);
+        assertEquals(1, manager.getPrioritizedTasks().size());
+    }
+
+    @Test
+    void updateEpicTime() {
+        T manager = getManager();
+        Epic epic = new Epic("epic", "desc");
+        manager.addEpic(epic);
+        SubTask subTask = new SubTask("subtask", "desc", LocalDateTime.now(),
+                Duration.ofMinutes(2), epic.getId());
+        manager.addSubTask(subTask);
+        SubTask subTask2 = new SubTask("subtask", "desc", LocalDateTime.now().plusMinutes(2),
+                Duration.ofMinutes(2), epic.getId());
+        manager.addSubTask(subTask2);
+        LocalDateTime endEpicTime = epic.getEndTime();
+        manager.removeSubTaskById(subTask2.getId());
+        assertNotEquals(epic.getEndTime(), endEpicTime);
+    }
+
+    @Test
+    void addTaskBeforeTaskStart(){
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(1));
+        manager.addTask(task);
+        Task task1 = new Task("task", "desc", LocalDateTime.now().minusMinutes(10), Duration.ofMinutes(1));
+        manager.addTask(task1);
+        assertEquals(task1.getId(),manager.getPrioritizedTasks().getFirst().getId());
+    }
+
+    @Test
+    void addTaskAfterTaskStart(){
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(1));
+        manager.addTask(task);
+        Task task1 = new Task("task", "desc", LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(1));
+        manager.addTask(task1);
+        assertEquals(task.getId(),manager.getPrioritizedTasks().getFirst().getId());
+    }
+
+    @Test
+    void updateCrossTask(){
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(5));
+        manager.addTask(task);
+        Task task1 = new Task("updated task", "desc", LocalDateTime.now(), Duration.ofMinutes(10));
+        manager.updateTask(task1);
+        assertEquals(manager.getPrioritizedTasks().getFirst().getName(),"task");
+        assertEquals(manager.getPrioritizedTasks().size(),1);
+    }
+
+    @Test
+    void updateCrossSubTask(){
+        T manager = getManager();
+        Epic epic = new Epic("epic","desc");
+        manager.addEpic(epic);
+        SubTask subTask = new SubTask("subtask", "desc", LocalDateTime.now(),
+                Duration.ofMinutes(2), epic.getId());
+        manager.addSubTask(subTask);
+        SubTask subTask1 = new SubTask("updated subtask", "desc", LocalDateTime.now(),
+                Duration.ofMinutes(10), epic.getId());
+        manager.updateSubTask(subTask1);
+        assertEquals(manager.getPrioritizedTasks().getFirst().getName(),"subtask");
+        assertEquals(manager.getPrioritizedTasks().size(),1);
+    }
+
+    @Test
+    void crossBeforeTaskStart(){
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(5));
+        manager.addTask(task);
+        Task task1 = new Task(" task", "desc", LocalDateTime.now().minusMinutes(5),
+                Duration.ofMinutes(5).plusSeconds(1));
+        manager.addTask(task1);
+        assertEquals(manager.getPrioritizedTasks().size(),1);
+    }
+
+    @Test
+    void crossAfterTaskStart(){
+        T manager = getManager();
+        Task task = new Task("task", "desc", LocalDateTime.now(), Duration.ofMinutes(5));
+        manager.addTask(task);
+        Task task1 = new Task(" task", "desc", LocalDateTime.now().plusMinutes(5).minusSeconds(1),
+                Duration.ofMinutes(5));
+        manager.addTask(task1);
+        assertEquals(manager.getPrioritizedTasks().size(),1);
     }
 
 }

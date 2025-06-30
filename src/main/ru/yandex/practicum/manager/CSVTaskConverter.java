@@ -1,4 +1,10 @@
+//Уже не стал ночью писать, решил отправить то что сделал. Так и не придумал я как без использования
+// split.length >= 5 переделать fromString. Если пишу split[6] == null,
+// что ожидаемо ругается на выход за границы массива, уже всю голову сломал...) А тестов добвил,
+// и в абстрактный класс таки решил перенести.Хорошего дня!)
+
 package main.ru.yandex.practicum.manager;
+
 
 import main.ru.yandex.practicum.model.*;
 
@@ -16,11 +22,10 @@ public class CSVTaskConverter {
                 return String.format("%s,%s,%s,%s,%s,%s", subTask.getId(), subTask.getTaskType(), subTask.getName(),
                         subTask.getStatus(), subTask.getDescription(), subTask.getEpicId());
             } else {
-                return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", subTask.getId(),
+                return String.format("%s,%s,%s,%s,%s,%s,%s,%s", subTask.getId(),
                         subTask.getTaskType(), subTask.getName(),
-                        subTask.getStatus(), subTask.getDescription(), subTask.getTaskStart().format(format),
-                        subTask.getTaskDuration().toMinutes(), subTask.getEndTime().format(format),
-                        subTask.getEpicId());
+                        subTask.getStatus(), subTask.getDescription(), subTask.getEpicId(), subTask.getTaskStart().format(format),
+                        subTask.getTaskDuration().toMinutes());
             }
         } else if (task.getTaskType() == TaskType.EPIC) {
             Epic epic = (Epic) task;
@@ -29,18 +34,16 @@ public class CSVTaskConverter {
                         epic.getStatus(), epic.getDescription());
 
             } else {
-                return String.format("%s,%s,%s,%s,%s,%s,%s,%s", epic.getId(), epic.getTaskType(), epic.getName(),
-                        epic.getStatus(), epic.getDescription(), epic.getTaskStart().format(format), epic.getTaskDuration().toMinutes(),
-                        epic.getEndTime().format(format));
+                return String.format("%s,%s,%s,%s,%s,%s,%s", epic.getId(), epic.getTaskType(), epic.getName(),
+                        epic.getStatus(), epic.getDescription(), epic.getTaskStart().format(format), epic.getTaskDuration().toMinutes());
             }
         } else {
             if (task.getTaskStart() == null || task.getTaskDuration() == null || task.getEndTime() == null) {
                 return String.format("%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
                         task.getStatus(), task.getDescription());
             } else {
-                return String.format("%s,%s,%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
-                        task.getStatus(), task.getDescription(), task.getTaskStart().format(format), task.getTaskDuration().toMinutes(),
-                        task.getEndTime().format(format));
+                return String.format("%s,%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
+                        task.getStatus(), task.getDescription(), task.getTaskStart().format(format), task.getTaskDuration().toMinutes());
             }
         }
     }
@@ -68,8 +71,8 @@ public class CSVTaskConverter {
                 default -> throw new ManagerSaveException("Ошибка");
             }
         } else {
-            LocalDateTime startTime = LocalDateTime.parse(split[5], format);
-            Duration duration = Duration.ofMinutes(Long.parseLong(split[6]));
+            LocalDateTime startTime = LocalDateTime.parse(split[6], format);
+            Duration duration = Duration.ofMinutes(Long.parseLong(split[7]));
             switch (taskType) {
                 case TASK -> {
                     return new Task(id, name, status, description, startTime, duration);
@@ -78,7 +81,7 @@ public class CSVTaskConverter {
                     return new Epic(id, name, status, description, startTime, duration);
                 }
                 case SUBTASK -> {
-                    int epicId = Integer.parseInt(split[8]);
+                    int epicId = Integer.parseInt(split[5]);
                     return new SubTask(id, name, status, description, startTime, duration, epicId);
                 }
                 default -> throw new ManagerSaveException("Ошибка");
