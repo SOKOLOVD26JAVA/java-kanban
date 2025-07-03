@@ -1,7 +1,4 @@
-//Уже не стал ночью писать, решил отправить то что сделал. Так и не придумал я как без использования
-// split.length >= 5 переделать fromString. Если пишу split[6] == null,
-// что ожидаемо ругается на выход за границы массива, уже всю голову сломал...) А тестов добвил,
-// и в абстрактный класс таки решил перенести.Хорошего дня!)
+
 
 package main.ru.yandex.practicum.manager;
 
@@ -19,7 +16,7 @@ public class CSVTaskConverter {
         if (task.getTaskType() == TaskType.SUBTASK) {
             SubTask subTask = (SubTask) task;
             if (subTask.getTaskStart() == null || subTask.getTaskDuration() == null || subTask.getEndTime() == null) {
-                return String.format("%s,%s,%s,%s,%s,%s", subTask.getId(), subTask.getTaskType(), subTask.getName(),
+                return String.format("%s,%s,%s,%s,%s,%s, , ", subTask.getId(), subTask.getTaskType(), subTask.getName(),
                         subTask.getStatus(), subTask.getDescription(), subTask.getEpicId());
             } else {
                 return String.format("%s,%s,%s,%s,%s,%s,%s,%s", subTask.getId(),
@@ -30,19 +27,19 @@ public class CSVTaskConverter {
         } else if (task.getTaskType() == TaskType.EPIC) {
             Epic epic = (Epic) task;
             if (epic.getTaskDuration() == null || epic.getTaskStart() == null || epic.getEndTime() == null) {
-                return String.format("%s,%s,%s,%s,%s", epic.getId(), epic.getTaskType(), epic.getName(),
+                return String.format("%s,%s,%s,%s,%s, , , ", epic.getId(), epic.getTaskType(), epic.getName(),
                         epic.getStatus(), epic.getDescription());
 
             } else {
-                return String.format("%s,%s,%s,%s,%s,%s,%s", epic.getId(), epic.getTaskType(), epic.getName(),
+                return String.format("%s,%s,%s,%s,%s,%s,%s, ", epic.getId(), epic.getTaskType(), epic.getName(),
                         epic.getStatus(), epic.getDescription(), epic.getTaskStart().format(format), epic.getTaskDuration().toMinutes());
             }
         } else {
             if (task.getTaskStart() == null || task.getTaskDuration() == null || task.getEndTime() == null) {
-                return String.format("%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
+                return String.format("%s,%s,%s,%s,%s, , , ", task.getId(), task.getTaskType(), task.getName(),
                         task.getStatus(), task.getDescription());
             } else {
-                return String.format("%s,%s,%s,%s,%s,%s,%s", task.getId(), task.getTaskType(), task.getName(),
+                return String.format("%s,%s,%s,%s,%s,%s,%s, ", task.getId(), task.getTaskType(), task.getName(),
                         task.getStatus(), task.getDescription(), task.getTaskStart().format(format), task.getTaskDuration().toMinutes());
             }
         }
@@ -56,7 +53,7 @@ public class CSVTaskConverter {
         String name = split[2];
         Status status = Status.valueOf(split[3]);
         String description = split[4];
-        if (split.length >= 5) {
+        if (split[6].trim().isEmpty() && split[7].trim().isEmpty()) {
             switch (taskType) {
                 case TASK -> {
                     return new Task(id, name, status, description);

@@ -1,9 +1,6 @@
 package main.ru.yandex.practicum.manager;
 
-import main.ru.yandex.practicum.model.Epic;
-import main.ru.yandex.practicum.model.Status;
-import main.ru.yandex.practicum.model.SubTask;
-import main.ru.yandex.practicum.model.Task;
+import main.ru.yandex.practicum.model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -24,8 +21,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) {
         task.setId(generateId());
-        checkAndAdd(task);
-        tasks.put(task.getId(), task);
+        if (checkAndAdd(task)) {
+            tasks.put(task.getId(), task);
+        }
     }
 
     @Override
@@ -62,9 +60,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task newTask) {
         Task oldTask = tasks.get(newTask.getId());
         if (oldTask != null) {
-            checkAndAdd(newTask);
-            tasks.put(newTask.getId(), newTask);
-            sortedTasks.remove(oldTask);
+            if (checkAndAdd(newTask)) {
+                tasks.put(newTask.getId(), newTask);
+                sortedTasks.remove(oldTask);
+            }
         } else {
             return;
         }
@@ -131,12 +130,13 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subTask.getEpicId());
         if (epic != null) {
             subTask.setId(generateId());
-            checkAndAdd(subTask);
-            subTasks.put(subTask.getId(), subTask);
-            epic.addSubTaskID(subTask.getId());
-            updateEpicStatus(epic.getId());
-            if (!(subTask.getTaskStart() == null) || !(subTask.getTaskDuration() == null)) {
-                updateEpicTimes(epic.getId());
+            if (checkAndAdd(subTask)) {
+                subTasks.put(subTask.getId(), subTask);
+                epic.addSubTaskID(subTask.getId());
+                updateEpicStatus(epic.getId());
+                if (!(subTask.getTaskStart() == null) || !(subTask.getTaskDuration() == null)) {
+                    updateEpicTimes(epic.getId());
+                }
             }
         } else {
             return;
@@ -195,14 +195,15 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask oldSubtask = subTasks.get(newSubTask.getId());
         Epic epic = epics.get(newSubTask.getEpicId());
         if (oldSubtask != null) {
-            checkAndAdd(newSubTask);
-            sortedTasks.remove(oldSubtask);
-            subTasks.put(newSubTask.getId(), newSubTask);
-            epic.getSubTasksID().remove(Integer.valueOf(oldSubtask.getId()));
-            epic.getSubTasksID().add(newSubTask.getId());
-            updateEpicStatus(epic.getId());
-            if (!(newSubTask.getTaskStart() == null) || !(newSubTask.getTaskDuration() == null)) {
-                updateEpicTimes(epic.getId());
+            if (checkAndAdd(newSubTask)) {
+                sortedTasks.remove(oldSubtask);
+                subTasks.put(newSubTask.getId(), newSubTask);
+                epic.getSubTasksID().remove(Integer.valueOf(oldSubtask.getId()));
+                epic.getSubTasksID().add(newSubTask.getId());
+                updateEpicStatus(epic.getId());
+                if (!(newSubTask.getTaskStart() == null) || !(newSubTask.getTaskDuration() == null)) {
+                    updateEpicTimes(epic.getId());
+                }
             }
         } else {
             return;
@@ -230,15 +231,20 @@ public class InMemoryTaskManager implements TaskManager {
         return task1.getEndTime().isAfter(task2.getTaskStart()) && task2.getEndTime().isAfter(task1.getTaskStart());
     }
 
-    private void checkAndAdd(Task task) {
+    private boolean checkAndAdd(Task task) {
         if (task.getTaskStart() == null || task.getTaskDuration() == null) {
-            return;
+            return true;
         }
         if (sortedTasks.isEmpty()) {
             sortedTasks.add(task);
+            return true;
         } else if (!crossForTasks(task)) {
             sortedTasks.add(task);
+            return true;
+        } else {
+            return false;
         }
+
     }
 
     private void updateEpicStatus(int epicId) {
