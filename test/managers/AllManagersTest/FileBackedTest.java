@@ -128,7 +128,6 @@ public class FileBackedTest extends AbstractManagersTest<FileBackedTaskManager> 
         FileBackedTaskManager newManager = FileBackedTaskManager.loadFromFile(tempFile.toFile());
         Task newTask = new Task("NewTask", "Desc");
         newManager.addTask(newTask);
-        System.out.println("");
         assertEquals(task.getId(), newTask.getId());
         assertNotNull(newManager.getTaskById(newTask.getId()));
     }
