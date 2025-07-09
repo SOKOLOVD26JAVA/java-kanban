@@ -27,7 +27,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    abstract public void handle(HttpExchange httpExchange) throws IOException;
+    public abstract  void handle(HttpExchange httpExchange) throws IOException;
 
     protected void sendMassage(HttpExchange httpExchange, int statusCode, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
