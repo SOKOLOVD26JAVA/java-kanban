@@ -9,7 +9,7 @@ import main.ru.yandex.practicum.model.Task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-;
+
 
 
 public class TaskHandler extends BaseHttpHandler {
