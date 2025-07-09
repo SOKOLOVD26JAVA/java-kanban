@@ -12,9 +12,9 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public void write(final JsonWriter jsonWriter, final LocalDateTime localDateTime) throws IOException {
-        if(localDateTime == null){
+        if (localDateTime == null) {
             jsonWriter.nullValue();
-        }else {
+        } else {
             jsonWriter.value(localDateTime.format(format));
         }
     }

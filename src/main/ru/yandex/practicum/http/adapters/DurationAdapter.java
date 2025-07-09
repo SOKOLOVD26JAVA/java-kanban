@@ -10,9 +10,9 @@ import java.time.Duration;
 
 public class DurationAdapter extends TypeAdapter<Duration> {
     public void write(final JsonWriter jsonWriter, final Duration duration) throws IOException {
-        if(duration == null){
+        if (duration == null) {
             jsonWriter.nullValue();
-        }else {
+        } else {
             jsonWriter.value(String.valueOf(duration));
         }
     }
