@@ -28,7 +28,7 @@ public class TaskHandler extends BaseHttpHandler {
             case "GET" -> get(httpExchange);
             case "POST" -> post(httpExchange);
             case "DELETE" -> delete(httpExchange);
-            default -> sendMassage(httpExchange, 500, "Ошибка обработки запроса "+method);
+            default -> sendMassage(httpExchange, 500, "Ошибка обработки запроса " + method);
         }
 
 
@@ -63,15 +63,52 @@ public class TaskHandler extends BaseHttpHandler {
         InputStream inputStream = httpExchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         Task task = gson.fromJson(body, Task.class);
-        if (task.getId() == 0) {
-            manager.addTask(task);
-            sendMassage(httpExchange, 200, "Задача " + task.getName() + " успешно добавлена!");
-        } else {
-            if (manager.getTaskById(task.getId()) == null) {
-                sendMassage(httpExchange, 404, "Задача с ID " + task.getId() + " отсутствует.");
+        if (!(task.getTaskStart() == null) && !(task.getTaskDuration() == null)) {
+            if (task.getId() == 0) {
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                    return;
+                }
+                manager.addTask(task);
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 200, "Задача " +
+                            task.getName() + " успешно добавлена!");
+                } else {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                }
             } else {
+                if (manager.getTaskById(task.getId()) == null) {
+                    sendMassage(httpExchange, 404, "Задача с ID " +
+                            task.getId() + " отсутствует.");
+                    return;
+                }
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                    return;
+                }
                 manager.updateTask(task);
-                sendMassage(httpExchange, 200, "Задача " + task.getName() + "успешно обновлена!");
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 200, "Задача " +
+                            task.getName() + " успешно обновлена!");
+                } else {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                }
+            }
+        } else {
+            if (task.getId() == 0) {
+                manager.addTask(task);
+                sendMassage(httpExchange, 200, "Задача " + task.getName() + " успешно добавлена!");
+            } else {
+                if (manager.getTaskById(task.getId()) == null) {
+                    sendMassage(httpExchange, 404, "Задача с ID " + task.getId() + " отсутствует.");
+                } else {
+                    manager.updateTask(task);
+                    sendMassage(httpExchange, 200, "Задача " + task.getName() + " успешно обновлена!");
+                }
             }
         }
     }

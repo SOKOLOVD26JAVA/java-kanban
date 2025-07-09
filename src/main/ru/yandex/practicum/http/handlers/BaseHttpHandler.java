@@ -29,22 +29,13 @@ public abstract class BaseHttpHandler implements HttpHandler {
     @Override
     abstract public void handle(HttpExchange httpExchange) throws IOException;
 
-    protected void sendMassage(HttpExchange httpExchange,int statusCode, String text) throws IOException {
+    protected void sendMassage(HttpExchange httpExchange, int statusCode, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         httpExchange.sendResponseHeaders(statusCode, resp.length);
         httpExchange.getResponseBody().write(resp);
         httpExchange.close();
     }
-
-//    protected void sendNotFound(HttpExchange httpExchange,String text) throws IOException {
-//        byte[] resp = text.getBytes();
-//        httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-//        httpExchange.sendResponseHeaders(404, resp.length);
-//        httpExchange.getResponseBody().write(resp);
-//        httpExchange.close();
-//    }
-
 
     protected void sendJsonResponse(HttpExchange exchange, String json) throws IOException {
         byte[] bytes = json.getBytes();

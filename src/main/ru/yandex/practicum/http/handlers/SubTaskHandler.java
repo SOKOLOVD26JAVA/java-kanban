@@ -55,20 +55,59 @@ public class SubTaskHandler extends BaseHttpHandler {
         InputStream inputStream = httpExchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         SubTask task = gson.fromJson(body, SubTask.class);
-
-        if (task.getId() == 0) {
-            if(task.getEpicId() == 0 || manager.getEpicById(task.getEpicId()) == null){
-                sendMassage(httpExchange,404,"Эпик для подзадачи не найден");
-            }else {
+        if (!(task.getTaskStart() == null) && !(task.getTaskDuration() == null)) {
+            if (task.getEpicId() == 0 || manager.getEpicById(task.getEpicId()) == null) {
+                sendMassage(httpExchange, 404, "Эпик для подзадачи не найден");
+                return;
+            }
+            if (manager.getPrioritizedTasks().contains(task)) {
+                sendMassage(httpExchange, 406, "Задача " +
+                        task.getName() + " пересекается с существующими");
+                return;
+            }
+            if (task.getId() == 0) {
                 manager.addSubTask(task);
-                sendMassage(httpExchange, 200, "Подзадача " + task.getName() + "успешно добавлена!");
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 200, "Задача " +
+                            task.getName() + " успешно добавлена!");
+                } else {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                }
+            } else {
+                if (manager.getSubTaskById(task.getId()) == null) {
+                    sendMassage(httpExchange, 404, "Подзадача с ID " + task.getId() + " отсутствует.");
+                }
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                    return;
+                }
+                manager.updateSubTask(task);
+                if (manager.getPrioritizedTasks().contains(task)) {
+                    sendMassage(httpExchange, 200, "Задача " +
+                            task.getName() + " успешно обновлена!");
+                } else {
+                    sendMassage(httpExchange, 406, "Задача " +
+                            task.getName() + " пересекается с существующими");
+                }
+
             }
         } else {
-            if (manager.getSubTaskById(task.getId()) == null) {
-                sendMassage(httpExchange, 404, "Подзадача с ID " + task.getId() + " отсутствует.");
+            if (task.getEpicId() == 0 || manager.getEpicById(task.getEpicId()) == null) {
+                sendMassage(httpExchange, 404, "Эпик для подзадачи не найден");
+                return;
+            }
+            if (task.getId() == 0) {
+                manager.addSubTask(task);
+                sendMassage(httpExchange, 200, "Подзадача " + task.getName() + "успешно добавлена!");
             } else {
-                manager.updateSubTask(task);
-                sendMassage(httpExchange, 200, "Подзадача " + task.getName() + "успешно обновлена!");
+                if (manager.getSubTaskById(task.getId()) == null) {
+                    sendMassage(httpExchange, 404, "Подзадача с ID " + task.getId() + " отсутствует.");
+                } else {
+                    manager.updateSubTask(task);
+                    sendMassage(httpExchange, 200, "Подзадача " + task.getName() + "успешно обновлена!");
+                }
             }
         }
     }

@@ -76,7 +76,7 @@ public class EpicHandler extends BaseHttpHandler {
         InputStream inputStream = httpExchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         Epic epic = gson.fromJson(body, Epic.class);
-        Epic epic1 = new Epic(epic.getId(),epic.getName(),epic.getDescription());
+        Epic epic1 = new Epic(epic.getId(), epic.getName(), epic.getDescription());
         if (epic.getId() == 0) {
             manager.addEpic(epic1);
             sendMassage(httpExchange, 200, "Задача " + epic.getName() + " успешно добавлена!");

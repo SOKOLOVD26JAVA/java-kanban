@@ -24,12 +24,12 @@ public class HistroyHandler extends BaseHttpHandler {
     }
 
     private void get(HttpExchange httpExchange) throws IOException {
-        if(manager.getHistory().isEmpty()){
-            sendMassage(httpExchange,404,"История просмотра пуста");
-        }else {
+        if (manager.getHistory().isEmpty()) {
+            sendMassage(httpExchange, 404, "История просмотра пуста");
+        } else {
             List<Task> history = manager.getHistory();
             String historySend = gson.toJson(history);
-            sendJsonResponse(httpExchange,historySend);
+            sendJsonResponse(httpExchange, historySend);
         }
 
     }
