@@ -1,18 +1,15 @@
 package main.ru.yandex.practicum.http.handlers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import com.sun.net.httpserver.HttpExchange;
-import main.ru.yandex.practicum.http.adapters.DurationAdapter;
-import main.ru.yandex.practicum.http.adapters.LocalDateTimeAdapter;
+
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
+;
 
 
 public class TaskHandler extends BaseHttpHandler {

@@ -5,7 +5,7 @@ import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Task;
 
 import java.io.IOException;
-import java.util.List;
+
 import java.util.TreeSet;
 
 public class PrioritizedHandler extends BaseHttpHandler {
