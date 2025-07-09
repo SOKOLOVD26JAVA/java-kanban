@@ -6,12 +6,7 @@ import com.sun.net.httpserver.HttpServer;
 import main.ru.yandex.practicum.http.adapters.DurationAdapter;
 import main.ru.yandex.practicum.http.adapters.LocalDateTimeAdapter;
 import main.ru.yandex.practicum.http.handlers.*;
-import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.TaskManager;
-import main.ru.yandex.practicum.model.Epic;
-import main.ru.yandex.practicum.model.Status;
-import main.ru.yandex.practicum.model.SubTask;
-import main.ru.yandex.practicum.model.Task;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
