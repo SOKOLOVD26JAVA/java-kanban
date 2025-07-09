@@ -27,8 +27,8 @@ public class PrioritizedHandler extends BaseHttpHandler {
         if (manager.getPrioritizedTasks().isEmpty()) {
             sendMassage(httpExchange, 404, "Отсортированный список пуст");
         } else {
-            TreeSet<Task> PrioritizedTasks = manager.getPrioritizedTasks();
-            String historySend = gson.toJson(PrioritizedTasks);
+            TreeSet<Task> prioritizedTasks = manager.getPrioritizedTasks();
+            String historySend = gson.toJson(prioritizedTasks);
             sendJsonResponse(httpExchange, historySend);
         }
 
