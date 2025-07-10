@@ -128,6 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addSubTask(SubTask subTask) {
         Epic epic = epics.get(subTask.getEpicId());
+
         if (epic != null) {
             subTask.setId(generateId());
             if (checkAndAdd(subTask)) {
