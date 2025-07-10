@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 
 
 public class HttpTaskServer {
-    protected final int PORT;
+    protected final int port;
     protected final TaskManager manager;
     protected HttpServer server = HttpServer.create();
 
     public HttpTaskServer(TaskManager taskManager, int port) throws IOException {
         this.manager = taskManager;
-        this.PORT = port;
-        server.bind(new InetSocketAddress(PORT), 5);
+        this.port = port;
+        server.bind(new InetSocketAddress(port), 5);
 //          По поводу создания контекста немного не понял, еще был такой вариант, тут соответственно в конструктор String text передаю..)
 //        switch (text){
 //            case "/task" -> createContextTask();
