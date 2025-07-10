@@ -2,6 +2,7 @@ package managers.http.SubTaskHendlerTest;
 
 import com.google.gson.Gson;
 import main.ru.yandex.practicum.http.HttpTaskServer;
+import main.ru.yandex.practicum.http.handlers.SubTaskHandler;
 import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 
 public class SubTaskTest {
     TaskManager manager = new InMemoryTaskManager();
-    HttpTaskServer server = new HttpTaskServer(manager);
+    HttpTaskServer server = new HttpTaskServer(manager,8080);
     Gson gson = HttpTaskServer.getGson();
 
     public SubTaskTest() throws IOException {
@@ -35,6 +36,7 @@ public class SubTaskTest {
         manager.removeAllSubTasks();
         manager.removeAllEpics();
         server.start();
+        server.createContextSubTask();
     }
 
     @AfterEach

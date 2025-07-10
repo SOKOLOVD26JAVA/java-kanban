@@ -3,6 +3,8 @@ package managers.http.EpicHandlerTest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.ru.yandex.practicum.http.HttpTaskServer;
+import main.ru.yandex.practicum.http.handlers.EpicHandler;
+import main.ru.yandex.practicum.http.handlers.SubTaskHandler;
 import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 
 public class EpicTest {
     TaskManager manager = new InMemoryTaskManager();
-    HttpTaskServer server = new HttpTaskServer(manager);
+    HttpTaskServer server = new HttpTaskServer(manager,8080);
     Gson gson = HttpTaskServer.getGson();
 
     public EpicTest() throws IOException {
@@ -38,6 +40,8 @@ public class EpicTest {
         manager.removeAllSubTasks();
         manager.removeAllEpics();
         server.start();
+        server.createContextEpic();
+        server.createContextSubTask();
     }
 
     @AfterEach

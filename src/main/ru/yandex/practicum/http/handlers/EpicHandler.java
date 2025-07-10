@@ -30,15 +30,15 @@ public class EpicHandler extends BaseHttpHandler {
     private void get(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("epic")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllEpics().isEmpty()) {
                 sendMassage(httpExchange, 404, "Эпиков нет");
             } else {
                 String allTasks = gson.toJson(manager.printAllEpics());
                 sendJsonResponse(httpExchange, allTasks);
             }
-        } else if (pathParts.length == 3 && pathParts[1].equals("epic")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length == 3) {
+            int id = getIdFromPathParts(pathParts);
             Epic epic = manager.getEpicById(id);
             if (epic == null) {
                 sendMassage(httpExchange, 404, "Эпик c ID " + id + " отсутствует");
@@ -46,8 +46,8 @@ public class EpicHandler extends BaseHttpHandler {
                 String sendEpic = gson.toJson(epic, Epic.class);
                 sendJsonResponse(httpExchange, sendEpic);
             }
-        } else if (pathParts.length == 4 && pathParts[1].equals("epic") && pathParts[3].equals("subtasks")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length == 4) {
+            int id = getIdFromPathParts(pathParts);
             Epic epic = manager.getEpicById(id);
             if (epic == null) {
                 sendMassage(httpExchange, 404, "Эпик c ID " + id + " отсутствует");
@@ -72,8 +72,7 @@ public class EpicHandler extends BaseHttpHandler {
 
 
     private void post(HttpExchange httpExchange) throws IOException {
-        InputStream inputStream = httpExchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = getBody(httpExchange);
         Epic epic = gson.fromJson(body, Epic.class);
         Epic epic1 = new Epic(epic.getId(), epic.getName(), epic.getDescription());
         if (epic.getId() == 0) {
@@ -93,15 +92,15 @@ public class EpicHandler extends BaseHttpHandler {
     void delete(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("epic")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllEpics().isEmpty()) {
                 sendMassage(httpExchange, 404, "Отсутствуют эпики для удаления.");
             } else {
                 manager.removeAllEpics();
                 sendMassage(httpExchange, 200, "Эпики успешно удалены.");
             }
-        } else if (pathParts.length > 2 && pathParts[1].equals("epic")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length > 2) {
+            int id = getIdFromPathParts(pathParts);
             Epic epic = manager.getEpicById(id);
             if (epic == null) {
                 sendMassage(httpExchange, 404, "Эпик c ID " + id + " отсутствует.");

@@ -3,6 +3,7 @@ package managers.http.taskHandlerTest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.ru.yandex.practicum.http.HttpTaskServer;
+import main.ru.yandex.practicum.http.handlers.TaskHandler;
 import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Task;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class TaskTest {
     TaskManager manager = new InMemoryTaskManager();
-    HttpTaskServer server = new HttpTaskServer(manager);
+    HttpTaskServer server = new HttpTaskServer(manager,8080);
     Gson gson = HttpTaskServer.getGson();
 
 
@@ -36,6 +37,7 @@ public class TaskTest {
         manager.removeAllSubTasks();
         manager.removeAllEpics();
         server.start();
+        server.createContextTask();
     }
 
     @AfterEach

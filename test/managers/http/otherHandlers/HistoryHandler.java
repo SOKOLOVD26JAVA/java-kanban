@@ -2,6 +2,7 @@ package managers.http.otherHandlers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.ru.yandex.practicum.http.HttpTaskServer;
+import main.ru.yandex.practicum.http.handlers.HistroyHandler;
 import main.ru.yandex.practicum.manager.InMemoryTaskManager;
 import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Epic;
@@ -18,13 +19,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 
 public class HistoryHandler {
     TaskManager manager = new InMemoryTaskManager();
-    HttpTaskServer server = new HttpTaskServer(manager);
+    HttpTaskServer server = new HttpTaskServer(manager,8080);
     Gson gson = HttpTaskServer.getGson();
 
     public HistoryHandler() throws IOException {
@@ -36,6 +36,9 @@ public class HistoryHandler {
         manager.removeAllSubTasks();
         manager.removeAllEpics();
         server.start();
+        server.createContextHistory();
+        server.createContextEpic();
+        server.createContextTask();
         manager.getHistory().clear();
     }
 

@@ -6,8 +6,7 @@ import main.ru.yandex.practicum.model.SubTask;
 import main.ru.yandex.practicum.model.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+
 
 public class SubTaskHandler extends BaseHttpHandler {
 
@@ -29,15 +28,15 @@ public class SubTaskHandler extends BaseHttpHandler {
     private void get(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("subtask")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllSubTasks().isEmpty()) {
                 sendMassage(httpExchange, 404, "Подзадач нет");
             } else {
                 String allTasks = gson.toJson(manager.printAllSubTasks());
                 sendJsonResponse(httpExchange, allTasks);
             }
-        } else if (pathParts.length > 2 && pathParts[1].equals("subtasks")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length > 2) {
+            int id = getIdFromPathParts(pathParts);
             SubTask task = manager.getSubTaskById(id);
             if (task == null) {
                 sendMassage(httpExchange, 404, "Подзадача c ID " + id + " отсутствует");
@@ -52,8 +51,7 @@ public class SubTaskHandler extends BaseHttpHandler {
 
 
     private void post(HttpExchange httpExchange) throws IOException {
-        InputStream inputStream = httpExchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = getBody(httpExchange);
         SubTask task = gson.fromJson(body, SubTask.class);
         if (!(task.getTaskStart() == null) && !(task.getTaskDuration() == null)) {
             if (task.getEpicId() == 0 || manager.getEpicById(task.getEpicId()) == null) {
@@ -115,15 +113,15 @@ public class SubTaskHandler extends BaseHttpHandler {
     void delete(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("subtask")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllSubTasks().isEmpty()) {
                 sendMassage(httpExchange, 404, "Отсутствуют подзадачи для удаления.");
             } else {
                 manager.removeAllSubTasks();
                 sendMassage(httpExchange, 200, "подзадачи успешно удалены.");
             }
-        } else if (pathParts.length > 2 && pathParts[1].equals("subtask")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length > 2) {
+            int id = getIdFromPathParts(pathParts);
             Task task = manager.getSubTaskById(id);
             if (task == null) {
                 sendMassage(httpExchange, 404, "Подзадача c ID " + id + " отсутствует.");

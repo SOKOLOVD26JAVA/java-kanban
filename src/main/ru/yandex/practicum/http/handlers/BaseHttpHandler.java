@@ -10,6 +10,7 @@ import main.ru.yandex.practicum.manager.TaskManager;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -27,7 +28,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    public abstract  void handle(HttpExchange httpExchange) throws IOException;
+    public abstract void handle(HttpExchange httpExchange) throws IOException;
 
     protected void sendMassage(HttpExchange httpExchange, int statusCode, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
@@ -44,6 +45,17 @@ public abstract class BaseHttpHandler implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
         }
+    }
+
+    protected String getBody(HttpExchange httpExchange) throws IOException {
+        InputStream inputStream = httpExchange.getRequestBody();
+        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    protected int getIdFromPathParts(String[] pathParts) {
+        return Integer.parseInt(pathParts[2]);
+//  Сначала хотел получать из запроса, типо String path = httpExchange.getRequestURI().getPath();
+//        String[] pathParts = path.split("/"); и возвращать 2 эл-т, но я так понимаю это лишнее, лучше передать массив?
     }
 
 

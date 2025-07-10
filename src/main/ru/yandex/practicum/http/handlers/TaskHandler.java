@@ -7,9 +7,6 @@ import main.ru.yandex.practicum.manager.TaskManager;
 import main.ru.yandex.practicum.model.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 
 
 public class TaskHandler extends BaseHttpHandler {
@@ -34,15 +31,15 @@ public class TaskHandler extends BaseHttpHandler {
     private void get(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("task")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllTasks().isEmpty()) {
                 sendMassage(httpExchange, 404, "Задач нет");
             } else {
                 String allTasks = gson.toJson(manager.printAllTasks());
                 sendJsonResponse(httpExchange, allTasks);
             }
-        } else if (pathParts.length > 2 && pathParts[1].equals("task")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length > 2) {
+            int id = getIdFromPathParts(pathParts);
             Task task = manager.getTaskById(id);
             if (task == null) {
                 sendMassage(httpExchange, 404, "Задача c ID " + id + " отсутствует");
@@ -57,8 +54,7 @@ public class TaskHandler extends BaseHttpHandler {
 
 
     private void post(HttpExchange httpExchange) throws IOException {
-        InputStream inputStream = httpExchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = getBody(httpExchange);
         Task task = gson.fromJson(body, Task.class);
         if (!(task.getTaskStart() == null) && !(task.getTaskDuration() == null)) {
             if (task.getId() == 0) {
@@ -113,15 +109,15 @@ public class TaskHandler extends BaseHttpHandler {
     void delete(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
-        if (pathParts.length <= 2 && pathParts[1].equals("task")) {
+        if (pathParts.length <= 2) {
             if (manager.printAllTasks().isEmpty()) {
                 sendMassage(httpExchange, 404, "Отсутствуют задачи для удаления.");
             } else {
                 manager.removeAllTasks();
                 sendMassage(httpExchange, 200, "Задачи успешно удалены.");
             }
-        } else if (pathParts.length > 2 && pathParts[1].equals("task")) {
-            int id = Integer.parseInt(pathParts[2]);
+        } else if (pathParts.length > 2) {
+            int id = getIdFromPathParts(pathParts);
             Task task = manager.getTaskById(id);
             if (task == null) {
                 sendMassage(httpExchange, 404, "Задача c ID " + id + " отсутствует.");
