@@ -2,7 +2,6 @@ package main.ru.yandex.practicum.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import main.ru.yandex.practicum.http.adapters.DurationAdapter;
 import main.ru.yandex.practicum.http.adapters.LocalDateTimeAdapter;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.logging.Handler;
+
 
 
 public class HttpTaskServer {
